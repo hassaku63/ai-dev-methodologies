@@ -167,7 +167,7 @@
 | 欄 | 内容 |
 | --- | --- |
 | ID | `motion-and-reduced-motion` |
-| 出どころ | WCAG 2.2 SC 2.3.3 Animation from Interactions (AAA) https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html 、SC 2.2.2 Pause, Stop, Hide (A)。*Media Queries Level 5* `prefers-reduced-motion` https://www.w3.org/TR/mediaqueries-5/#prefers-reduced-motion 。MDN https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion 。Apple HIG "Motion" |
+| 出どころ | WCAG 2.2 SC 2.3.3 Animation from Interactions (AAA) https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html 、SC 2.2.2 Pause, Stop, Hide (A)。*Media Queries Level 5* `prefers-reduced-motion` https://www.w3.org/TR/mediaqueries-5/#prefers-reduced-motion 。MDN https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion 。Apple HIG "Motion" |
 | ソース | なし |
 | 何を言っているか | 操作をきっかけに起きる必須でない動き（視差、ズーム演出）は切れるようにする。自動で 5 秒以上動き続けるものは止められるようにする。前庭障害の人には吐き気・頭痛を起こしうる。OS の「動きを減らす」設定は `prefers-reduced-motion: reduce` で読める。再生位置の移動のような、情報そのものである動きは「必須」に当たる |
 | 確からしさ | 規範（WCAG）と仕様（CSS。主要ブラウザで実装済み）。 確かめた範囲（middy での確認）: WCAG 2.2、MQ5、MDN、Apple HIG |
@@ -211,7 +211,7 @@
 | 欄 | 内容 |
 | --- | --- |
 | ID | `conceptual-models-mapping` |
-| 出どころ | Norman, D. A. (2013) *The Design of Everyday Things, Revised and Expanded*, Basic Books。第 1 章（概念モデル／システムイメージ）、第 3 章（自然な対応づけ）、第 4 章（4 種の制約、強制機能）。目次: https://jnd.org/the-design-of-everyday-things-revised-and-expanded/ 。Nielsen のヒューリスティクス 2「現実世界との一致」 |
+| 出どころ | Norman, D. A. (2013) *The Design of Everyday Things, Revised and Expanded*, Basic Books。第 1 章（概念モデル／システムイメージ）、第 3 章（自然な対応づけ）、第 4 章（4 種の制約、強制機能）。目次: https://jnd.org/books/the-design-of-everyday-things-revised-and-expanded-edition/ 。Nielsen のヒューリスティクス 2「現実世界との一致」 |
 | ソース | なし |
 | 何を言っているか | 設計者の頭の中のモデルは直接ユーザーに届かない。ユーザーは「システムイメージ」（画面・文書・振る舞いから見えるもの全部）から自分のモデルを組み立てる。操作子と結果の空間的な対応（自然な対応づけ）と、できることを絞る制約は、説明なしでモデルを伝える手段。対応づけの一部（左右と上下、色の意味）は文化で変わる |
 | 確からしさ | 枠組み。実務での合意は厚いが、個々の対応づけの効果は文脈で測る。 確かめた範囲（middy での確認）: 目次のみ。本文は未確認・書籍 |
@@ -417,7 +417,7 @@
 | 欄 | 内容 |
 | --- | --- |
 | ID | `perceptual-color-spaces` |
-| 出どころ | Ottosson, B. (2020) A perceptual color space for image processing https://bottosson.github.io/posts/oklab/ 。W3C *CSS Color Module Level 4* §9 https://www.w3.org/TR/css-color-4/ 。*CSS Color Module Level 5* `color-mix()` https://www.w3.org/TR/css-color-5/ 、MDN https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix |
+| 出どころ | Ottosson, B. (2020) A perceptual color space for image processing https://bottosson.github.io/posts/oklab/ 。W3C *CSS Color Module Level 4* §9 https://www.w3.org/TR/css-color-4/ 。*CSS Color Module Level 5* `color-mix()` https://www.w3.org/TR/css-color-5/ 、MDN https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/color-mix |
 | ソース | なし |
 | 何を言っているか | HSL/HSV は同じ「明度」でも黄と青で見た目の明るさが大きく違う。Oklab は明度 L・色度が互いに独立に近く、補間が滑らかになるよう設計された。CSS では `oklch()` / `oklab()` / `lab()` / `lch()` が標準化され、`color-mix()` で混ぜる色空間を選べる |
 | 確からしさ | 色彩科学の応用。「知覚的に均一」は近似。トークンの決め方の道具であって、WCAG のコントラスト比の代替ではない。 |

@@ -81,8 +81,13 @@ def check_urls(found):
             broken.append(f"- {url}（{getattr(e, 'reason', e)}）")
             continue
         def bare(u):
-            # The fragment never reaches the server, and a trailing slash or http->https is not a move.
-            return re.sub(r"^https?://", "", u.split("#", 1)[0]).rstrip("/")
+            # The fragment never reaches the server; a trailing slash, http->https,
+            # "www." and an explicit :443 are not moves.
+            u = re.sub(r"^https?://(www\.)?", "", u.split("#", 1)[0]).rstrip("/")
+            return u.replace(":443/", "/", 1)
+        # A DOI always redirects to the publisher: that is how it works, not a move.
+        if url.startswith(("https://doi.org/", "https://dx.doi.org/")):
+            continue
         if bare(url) != bare(final):
             moved.append(f"- {url} → {final}")
     return broken, moved, refused
