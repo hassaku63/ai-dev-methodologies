@@ -1,12 +1,19 @@
 {
   "name": "ai-dev-methodologies",
   "description": "所有者の個人用。リポジトリの内容に合わせて選んで導入する、AI 活用の枠組みの部品",
-  "owner": { "name": "hassaku63" },
+  "owner": {
+    "name": "hassaku63"
+  },
   "plugins": [
     {
       "name": "core",
       "source": "./plugins/core",
       "description": "どの導入先にも共通の手順: 導入、Issue の流れ、実装とレビューのサブエージェント、文書の鮮度"
+    },
+    {
+      "name": "aws-ops",
+      "source": "./plugins/aws-ops",
+      "description": "AWS のインフラを調べて記録するリポジトリ向け。エージェントの AWS の操作を読み取りに限る"
     }
   ]
 }

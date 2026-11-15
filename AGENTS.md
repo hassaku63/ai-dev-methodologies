@@ -43,6 +43,7 @@ ai-dev-methodologies で作業する人間と AI コーディングエージェ�
 | `plugins/core/skills/adopt/adopt.sh` | 導入先にファイルを置くスクリプト | 振る舞いを変えたら `scripts/test-adopt.sh` に確かめを足す |
 | `plugins/core/skills/adopt/assets/managed/` | 導入先にそのままコピーするファイル | 導入先ごとに変えたくなるものを置かない |
 | `plugins/core/skills/adopt/assets/owned/` | 導入先が所有するファイルの雛形（末尾が `.tmpl`） | 導入先で埋める箇所は「（導入先で書く: …）」と書く |
+| `plugins/aws-ops/hooks/` | 運用・管理のリポジトリ向けのフック。AWS の操作を読み取りに限る（ADR-0009） | 通す操作を足したら `scripts/test-guard-aws.py` に行を足す。迷う操作は通さない |
 | `docs/contract.md` | 導入先が守る規約 | 手順の前提と食い違わせない |
 | `docs/architecture/adr/` | 決定の記録 | 索引に載せる |
 | `scripts/`、`docs/dev/docs-hygiene.md`、`.github/ISSUE_TEMPLATE/` | このリポジトリ自身に導入した `core` のコピー | 直接は変えない。`assets/managed/` の方を変えて、導入し直す |
@@ -51,6 +52,7 @@ ai-dev-methodologies で作業する人間と AI コーディングエージェ�
 make check            # すべての検査（CI は同じターゲットを呼ぶ）
 make docs-check       # 文書の検査だけ
 make test-adopt       # 空のリポジトリに core を導入して確かめる
+make test-guard-aws   # aws-ops のフックを、コマンドの表で確かめる
 make plugin-validate  # マーケットプレイスと plugin の定義（claude の CLI が要る）
 bash plugins/core/skills/adopt/adopt.sh .   # このリポジトリに core を導入し直す
 ```
