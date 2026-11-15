@@ -51,6 +51,7 @@ ai-dev-methodologies で作業する人間と AI コーディングエージェ�
 | `plugins/aws-ops/skills/inventory/` | 構成を取得するスクリプトと、棚卸しの記録を作るスクリプト | 取得は読み取りの操作だけにする（テストがフックの判定で確かめる）。同じ取得結果から同じ記録を作る。詳しい表を足しても、種類を問わない発見を外さない（表の無い種類が記録から消えないようにする） |
 | `plugins/aws-ops/lib/apps.py` | アプリケーションの単位の定義の読み方と、リソースの当て方。Finding と棚卸しが共に使う | 当て方を変えたら、架空の例の記録を両方作り直す |
 | `plugins/aws-iac/skills/plan/` | `terraform plan` を要約する手順とスクリプト | 属性の値を出力しない（名前だけ）。同じ plan から同じ要約を作る |
+| `plugins/knowledge/catalog/` | 開発のプラクティスと業界標準の目録（ADR-0011）。書き方は `plugins/knowledge/catalog/README.md` | 出どころを開いて書く。特定のリポジトリの例を書かない。ID を変えない |
 | `examples/ops-example/`、`examples/iac-example/` | 部品を確かめるための、架空のリポジトリ | 実在の環境の値を入れない |
 | `docs/contract.md` | 導入先が守る規約 | 手順の前提と食い違わせない |
 | `docs/architecture/adr/` | 決定の記録 | 索引に載せる |
@@ -65,6 +66,7 @@ make test-guard-iac   # aws-iac のフックを、コマンドの表で確かめ
 make test-findings    # Finding のまとめを、架空の例で確かめる
 make test-inventory   # 構成の棚卸しを、架空の例と偽の aws で確かめる
 make test-plan        # plan の要約を、架空の例で確かめる
+make catalog-check    # 知識の目録の形を確かめる
 make plugin-validate  # マーケットプレイスと plugin の定義（claude の CLI が要る）
 bash plugins/core/skills/adopt/adopt.sh .   # このリポジトリに core を導入し直す
 ```
