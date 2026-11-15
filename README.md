@@ -39,6 +39,12 @@ AWS のインフラを調べて記録するリポジトリでは、続けて `aw
 claude plugin install aws-ops@ai-dev-methodologies --scope project
 ```
 
+開発のプラクティスと業界標準の索引を使うリポジトリでは、`knowledge` を入れ、`/knowledge:adopt` を実行する。対応表（`<導入先>/docs/knowledge/`）ができる。
+
+```bash
+claude plugin install knowledge@ai-dev-methodologies --scope project
+```
+
 Terraform や CDK のリポジトリでは、`aws-iac` を入れ、`/aws-iac:adopt` を実行する。インフラのコードの検査が `make check` に入る。
 
 ```bash

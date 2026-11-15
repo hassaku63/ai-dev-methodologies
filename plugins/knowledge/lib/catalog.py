@@ -81,6 +81,20 @@ def check_entry(kind, title, fields):
     return problems
 
 
+def snapshot(root):
+    """The lines of the ID list that adopted repositories check their mapping against.
+
+    One line per entry: "<kind> <ID> <pack> <target>", where target is the
+    対象 field without backticks and spaces ("なし" when none).
+    """
+    lines = ["# Generated from the ai-dev-methodologies knowledge catalog. Do not edit by hand.",
+             "# <kind> <ID> <pack> <target>"]
+    for kind, pack, _title, fields, _path, _line in sorted(load(root), key=lambda e: (e[0], e[3].get("ID", ""))):
+        target = fields.get("対象", "なし").replace("`", "").replace(" ", "") or "なし"
+        lines.append(f"{kind} {fields.get('ID', '').strip('`')} {pack} {target}")
+    return "\n".join(lines) + "\n"
+
+
 def load(root):
     """All entries under a catalog root: list of (kind, pack, title, fields, path, line)."""
     found = []

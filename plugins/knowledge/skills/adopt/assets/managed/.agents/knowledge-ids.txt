@@ -1,0 +1,18 @@
+# Generated from the ai-dev-methodologies knowledge catalog. Do not edit by hand.
+# <kind> <ID> <pack> <target>
+practices advisor-at-decision-points agent-workflow なし
+practices beck-design-rules general なし
+practices illegal-states-unrepresentable general なし
+practices impureim-sandwich general なし
+practices parse-dont-validate general なし
+practices property-based-tests testing なし
+practices small-changes general なし
+practices table-driven-tests testing なし
+practices test-clear-and-complete testing なし
+practices test-desiderata testing なし
+practices test-doubles-prefer-real testing なし
+practices test-size-small-first testing なし
+practices test-via-public-api testing なし
+practices what-to-look-for-in-review general なし
+practices wrong-abstraction general なし
+practices yagni general なし
