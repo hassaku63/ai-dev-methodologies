@@ -93,7 +93,7 @@
 | ID | `property-based-tests` |
 | 出どころ | fast-check の文書「What is Property-Based Testing?」「Why Property-Based Testing?」。https://fast-check.dev/docs/introduction/why-property-based/ 。Hypothesis の文書と、D. R. MacIver「The Encode/Decode invariant」 |
 | ソース | `dubzzz/fast-check:website/docs/introduction/what-is-property-based-testing.md@0d28f7b`, `dubzzz/fast-check:website/docs/introduction/why-property-based.md@0d28f7b`, `HypothesisWorks/hypothesis:website/content/2016-04-16-encode-decode-invariant.md@9ab0be6` |
-| 何を言っているか | 入力と出力の組を個別に書く代わりに、すべての入力で成り立つべき関係を書き、道具に多数の入力を作らせて反例を探す。反例は小さく縮めて示される。見つけやすい性質は、往復（変換して戻すと元に戻る）、単純で明らかに正しい実装との一致、保存される量、落ちないこと。種を固定すれば再現できる。 |
+| 何を言っているか | 入力と出力の組を個別に書く代わりに、すべての入力で成り立つべき関係を書き、道具に多数の入力を作らせて反例を探す。反例は小さく縮めて示される。見つけやすい性質は、往復（変換して戻すと元に戻る。2 つの操作が同じ結果を出す関係の一種）と、どんな入力でも落ちないこと。種を固定すれば再現できる。 |
 | 確からしさ | 公式の推奨（各ライブラリの公式の文書）。例によるテストの置き換えではなく追加だと明言している。全部の入力は試せないので、通っても証明ではない。誤用: 遅さや失敗を避けるために入力の範囲を狭め、反例の出る値を締め出す。 |
 | 当たるべき場面 | 往復（変換して戻すと元に戻る）、並べ替えても変わらない、などの不変量を持つ関数。同じ形の事例の表が長くなったとき。道具を依存に足すか決めるとき。 |
 | 判断の問い | この関数に、すべての入力で成り立つと言い切れる関係を 1 つ書けるか（書けないなら例で足りる）。生成する入力の範囲は、関数が受け付けると約束した範囲と同じか。 |
