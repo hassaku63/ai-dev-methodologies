@@ -13,6 +13,7 @@
 | プラクティス | `practices/typescript.md` | TypeScript |
 | プラクティス | `practices/react.md` | React |
 | プラクティス | `practices/test-tools-js.md` | JavaScript のテストの道具（Testing Library、Vitest） |
+| プラクティス | `practices/terraform.md` | Terraform |
 | プラクティス | `practices/hci.md` | 画面と操作の設計（HCI、認知心理学、インタラクションデザイン、アクセシビリティ） |
 | 業界標準 | `standards/containers.md` | コンテナとビルド（Dockerfile、BuildKit の Build checks、Compose） |
 
@@ -66,6 +67,8 @@
 - ID は変えない。導入先の対応表が指している。項目を外すときは、束の「外したもの」に移し、ID を書いておく。
 
 ## 出どころ
+
+`practices/terraform.md` は、このリポジトリで一次情報（HashiCorp の文書）を開いて書いた。
 
 次の束は、`hassaku63/chord-rambler` の索引から移した。プラクティスは `hassaku63/chord-rambler:.claude/skills/practices/index.md@76ea655`、業界標準は `hassaku63/chord-rambler:.claude/skills/standards/index.md@76ea655`。
 
