@@ -8,7 +8,8 @@
 #   6. aws-iac's check runs every step with stub tools, fails when a tool
 #      fails or is missing, and calls nothing its guard would stop.
 #   7. knowledge's mapping check accepts catalog IDs and rejects unknown,
-#      duplicated, empty and malformed rows and local entries.
+#      duplicated, empty and malformed rows and local entries, and an entry
+#      written for another version of a dependency the repository uses.
 # Part of `make check`. Needs bash, git, make.
 # Backticks inside single quotes are Markdown here, not command substitution.
 # shellcheck disable=SC2016
@@ -171,6 +172,54 @@ open(path, "w").write(text)
 PY
 kcheck && fail "a local entry with missing fields was accepted"
 grep -q "missing field" "$work/kcheck.log" || fail "the local entry was not checked for its fields"
+cp "$work/practices.orig" "$practices"
+
+# 7b. a local entry written for react@19 fails while the repository uses react@18, and passes with 19
+python3 - "$practices" <<'PY'
+import sys
+path = sys.argv[1]
+text = open(path).read()
+entry = """### 架空の React の知見
+
+| 欄 | 内容 |
+| --- | --- |
+| ID | `local-react-thing` |
+| 出どころ | 架空の出どころ。https://example.com/react |
+| ソース | なし |
+| 何を言っているか | 架空。 |
+| 確からしさ | 架空。 |
+| 当たるべき場面 | 架空。 |
+| 判断の問い | 架空。 |
+| 対象 | `react@19` |
+| 確認 | 2026-11-15 / 間隔 90 日 |
+
+"""
+head = "| 項目 | このリポジトリでの場面 | このプロジェクトの立場 |\n| --- | --- | --- |\n"
+text = text.replace(head, head + "| `local-react-thing` | — | 未定 |\n", 1)
+text = text.replace("## 外したもの", entry + "## 外したもの", 1)
+open(path, "w").write(text)
+PY
+mkdir -p "$second/web"
+printf '{"packages": {"": {}, "node_modules/react": {"version": "18.3.1"}, "node_modules/x/node_modules/react": {"version": "19.0.0"}}}\n' > "$second/web/package-lock.json"
+kcheck && fail "an entry written for react@19 passed while the repository uses react@18"
+grep -q 'uses react@18' "$work/kcheck.log" || { cat "$work/kcheck.log" >&2; fail "the version mismatch was not reported"; }
+printf '{"packages": {"node_modules/react": {"version": "19.1.0"}}}\n' > "$second/web/package-lock.json"
+kcheck || { cat "$work/kcheck.log" >&2; fail "an entry written for react@19 failed while the repository uses react@19"; }
+printf 'nodejs 22.4.0\ngolang 1.27.2\n' > "$second/.tool-versions"
+printf 'provider "registry.terraform.io/hashicorp/aws" {\n  version     = "5.70.0"\n}\n' > "$second/envs/dev/.terraform.lock.hcl"
+python3 - "$second" <<'PY' || fail "dependency versions were not read from .tool-versions, .terraform.lock.hcl or package-lock.json"
+import sys
+sys.path.insert(0, sys.argv[1] + "/scripts")
+import importlib.util
+spec = importlib.util.spec_from_file_location("ck", sys.argv[1] + "/scripts/check-knowledge.py")
+ck = importlib.util.module_from_spec(spec); spec.loader.exec_module(ck)
+v = ck.used_versions()
+assert ("22", "4") == v["node"][0][:2], v.get("node")
+assert ("1", "27") == v["go"][0][:2], v.get("go")
+assert ("5", "70") == v["hashicorp/aws"][0][:2], v.get("hashicorp/aws")
+assert len(v["react"]) == 1, v["react"]
+PY
+rm -r "${second:?}/web" "${second:?}/.tool-versions" "${second:?}/envs/dev/.terraform.lock.hcl"
 cp "$work/practices.orig" "$practices"
 
 # 8. --dry-run writes nothing
