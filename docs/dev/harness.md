@@ -23,6 +23,8 @@ CI の `required (make check)` は `make check` をそのまま呼ぶ。必須�
 | 構成の棚卸しのテスト（`scripts/test-inventory.sh`。架空の例の取得結果から作った記録が、コミットした記録と一致する。取得のスクリプトを、偽の `aws` に対して走らせる。Python 3 が要る） | 記録のスクリプトの振る舞いが、気づかずに変わること。取得のスクリプトが、読み取りでない操作を呼ぶこと。1 つの失敗で取得が止まること。取れなかった部分を記録が黙って欠くこと。種類を問わない発見が取れなかったのに、記録がそれを言わないこと | `make test-inventory` | `make check` |
 | plan の要約のテスト（`scripts/test-plan.sh`。架空の例の plan から作った要約が、コミットした要約と一致する。Python 3 が要る） | 要約のスクリプトの振る舞いが、気づかずに変わること。属性の値（秘密情報を含みうる）が要約に載ること。データソースを変更として数えること | `make test-plan` | `make check` |
 | 知識の目録の形（`scripts/check-catalog.py`。欄の欠けと空、未知の欄、ID の書き方と重複、出どころの URL、ソース・対象・確認の書き方。導入でコピーする ID の一覧が目録と一致すること。Python 3 が要る） | 出どころや確認日の無い項目。導入先の対応表から指せない項目。ID の重複。目録を変えたのに ID の一覧が古いままになること | `make catalog-check` | `make check` |
+| 目録の鮮度の報告の、期限の部分のテスト（`scripts/test-staleness.sh`。日付を固定して走らせる） | 期限の計算の誤りで、期限を過ぎた項目が報告に出ないこと | `make test-staleness` | `make check` |
+| 目録の鮮度の報告（`scripts/knowledge-staleness.py`。見直しの期限、出どころのリンク切れと移動、記録したコミットのあとのソースの変更。日付とネットワークに依るので `make check` には入れない） | 目録の項目が古くなったことに気づけないこと | `python3 scripts/knowledge-staleness.py`（期限だけなら `--offline`） | 月次の `knowledge review`（指摘があれば `knowledge-review` の Issue。`docs/dev/knowledge-review.md`） |
 | マーケットプレイスと plugin の定義（`claude` の CLI が要るので `make check` には入れない） | 定義の書き間違いで、導入先が plugin を読み込めないこと | `make plugin-validate` | 手元（plugin の定義を変えたとき） |
 
 ## 変更の大きさ
