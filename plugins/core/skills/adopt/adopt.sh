@@ -71,7 +71,7 @@ while IFS= read -r src; do
     # Changed by hand, or it was there before the first adoption.
     echo "kept     $rel"; echo "file ${old:-local} $rel $plugin" >> "$entries"
   fi
-done < <([ -d "$assets/managed" ] && find -L "$assets/managed" -type f | sort)
+done < <([ -d "$assets/managed" ] && find -L "$assets/managed" -type f -not -path "*/__pycache__/*" | sort)
 
 # --- owned -----------------------------------------------------------------
 while IFS= read -r src; do
@@ -87,7 +87,7 @@ while IFS= read -r src; do
     sed "s/{{PROJECT}}/$project/g" "$src" > "$dst"
   fi
   echo "created  $rel"
-done < <([ -d "$assets/owned" ] && find -L "$assets/owned" -type f -name '*.tmpl' | sort)
+done < <([ -d "$assets/owned" ] && find -L "$assets/owned" -type f -name '*.tmpl' -not -path '*/__pycache__/*' | sort)
 
 # --- lock ------------------------------------------------------------------
 if [ "$dry" -eq 0 ]; then
