@@ -19,6 +19,7 @@ CI の `required (make check)` は `make check` をそのまま呼ぶ。必須�
 | 導入のテスト（`scripts/test-adopt.sh`。空のリポジトリに `core` を導入し、別のリポジトリに `core` と `aws-ops` を続けて導入する） | 導入した直後に `make check` が通らないこと。2 度目の実行で何かが変わること。手で変えたファイルや導入先が所有するファイルを上書きすること。`--dry-run` が書き込むこと。ある plugin の導入が、ほかの plugin の導入の記録を消すこと。`ops/raw/` がコミットに入ること | `make test-adopt` | `make check` |
 | `aws-ops` のフックのテスト（`scripts/test-guard-aws.py`。コマンドの表に対して、通す・止める・尋ねるを確かめる。Python 3 が要る） | 読み取りでない AWS の操作を通すこと。秘密情報やデータを読む操作を通すこと。読み取りを止めて調査を妨げること | `make test-guard-aws` | `make check` |
 | Finding のまとめのテスト（`scripts/test-findings.sh`。架空の例の Finding から作った記録が、コミットした記録と一致する。Python 3 が要る） | まとめのスクリプトの振る舞いが、気づかずに変わること。対応が要らない Finding を数えること。誤った定義を受け付けること | `make test-findings` | `make check` |
+| 構成の棚卸しのテスト（`scripts/test-inventory.sh`。架空の例の取得結果から作った記録が、コミットした記録と一致する。取得のスクリプトを、偽の `aws` に対して走らせる。Python 3 が要る） | 記録のスクリプトの振る舞いが、気づかずに変わること。取得のスクリプトが、読み取りでない操作を呼ぶこと。1 つの失敗で取得が止まること。取れなかった部分を記録が黙って欠くこと | `make test-inventory` | `make check` |
 | マーケットプレイスと plugin の定義（`claude` の CLI が要るので `make check` には入れない） | 定義の書き間違いで、導入先が plugin を読み込めないこと | `make plugin-validate` | 手元（plugin の定義を変えたとき） |
 
 ## 変更の大きさ

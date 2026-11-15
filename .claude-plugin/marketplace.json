@@ -13,7 +13,7 @@
     {
       "name": "aws-ops",
       "source": "./plugins/aws-ops",
-      "description": "AWS のインフラを調べて記録するリポジトリ向け。エージェントの AWS の操作を読み取りに限り、Finding をアプリケーションの単位でまとめる"
+      "description": "AWS のインフラを調べて記録するリポジトリ向け。エージェントの AWS の操作を読み取りに限り、Finding のまとめと構成の棚卸しを行う"
     }
   ]
 }
