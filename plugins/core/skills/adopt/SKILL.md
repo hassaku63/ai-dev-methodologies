@@ -20,7 +20,7 @@ disable-model-invocation: true
 3. **置く。** 作業用のブランチで、`--dry-run` を外して走らせる。
 4. **すでにあったファイルを合わせる。** `exists` と `kept` の行ごとに、今あるファイルを読み、規約に足りないものだけを足す。置き換えない。
    - `Makefile`: `check` のターゲットがあり、`docs-check` を呼ぶ。`pr-size` のターゲット（置かれた `check-pr-size.sh` を `bash` で、比べる先の `PR_BASE` を渡して呼ぶ）がある。今ある検査（lint、テスト、ビルド）も `check` から呼ぶ。`Makefile` を使わない方針なら、`make check` に当たる 1 つのコマンドを所有者と決め、`AGENTS.md` に書く。
-   - `AGENTS.md`: 今ある内容を残し、雛形（スキルのディレクトリの `assets/owned/AGENTS.md.tmpl`）の節のうち、無いものを足す。`CLAUDE.md` に規則が書いてあれば `AGENTS.md` に移し、`CLAUDE.md` は `@AGENTS.md` と Claude Code に固有の補足だけにする。
+   - `AGENTS.md`: 今ある内容を残し、雛形（スキルのディレクトリの `assets/owned/AGENTS.md.tmpl`）の節のうち、無いものを足す。`CLAUDE.md` に規則が書いてあれば `AGENTS.md` に移し、`CLAUDE.md` は `@AGENTS.md` と Claude Code に固有の補足だけにする。`.cursor/rules` に規則があれば、どの道具でも同じ規則は `AGENTS.md` に移す案を所有者に示す（Cursor は `AGENTS.md` も読む）。特定のファイルにだけ当てる規則（`globs`）は、`.cursor/rules` に残してよい。
    - `.claude/settings.json`: 今ある設定を残し、`extraKnownMarketplaces` と `enabledPlugins` の項目を足す。
    - `.github/workflows/ci.yml`: 今ある CI に、`make check` を呼ぶ必須のジョブがあるようにする。PR のときに `make pr-size` を走らせる段も足す（雛形の `ci.yml` と同じ形）。
    - `docs/README.md`: `docs/` の文書を全部、Markdown のリンクで載せる。
