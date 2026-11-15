@@ -95,14 +95,14 @@
 | 欄 | 内容 |
 | --- | --- |
 | ID | `window-size-classes` |
-| 出どころ | Apple *Human Interface Guidelines* "Layout"（compact / regular の size class）https://developer.apple.com/design/human-interface-guidelines/layout 。Material Design 3 "Window size classes"（compact / medium / expanded / large / extra-large） |
+| 出どころ | Apple *Human Interface Guidelines* "Layout"（compact / regular の size class）https://developer.apple.com/design/human-interface-guidelines/layout 。Material Design 3 "Window size classes"（compact / medium / expanded / large / extra-large）。Android Developers "Use window size classes" https://developer.android.com/develop/ui/compose/layouts/adaptive/use-window-size-classes 、"Support different display sizes" https://developer.android.com/develop/ui/compose/layouts/adaptive/support-different-display-sizes |
 | ソース | なし |
 | 何を言っているか | 配置の分岐は「スマホか PC か」ではなく「使える幅（と高さ）がどれだけか」で決める。幅が変わっても、できることは変えない（配置だけ変える）。安全領域と余白を尊重し、文字サイズの拡大でも崩れないようにする |
 | 確からしさ | プラットフォームの実務指針。Apple は、使える空間によってできることは変えず、画面に見せる量は変えてよい（広い画面でタブバーからサイドバーに替える、など）と書く。 確かめた範囲（middy での確認）: Apple HIG。Material 3 は JS 描画で本文が取れず未確認）。2026-11-10 に Android Developers の window size classes と "Support different display sizes" を確認。どちらも Material 3 の境目に対応し、物理的な端末の値で配置を決めない、部品は与えられた幅を使う、と明記している（https://developer.android.com/develop/ui/compose/layouts/adaptive/support-different-display-sizes  |
 | 当たるべき場面 | 広い画面の列構成と、狭い画面の縦積みを切り替える幅を決めるとき。画面の大きさごとのテストの幅を決めるとき。 |
 | 判断の問い | 分岐の条件は幅（と高さ）か（端末の種類ではないか）。幅が狭いときに、できることが失われていないか。文字を大きくしたら崩れないか。 |
 | 対象 | なし |
-| 確認 | 2026-11-09 / 間隔 365 日 |
+| 確認 | 2026-11-15 / 間隔 365 日 |
 
 ## 時間で変わる情報（自動で出る・消える）
 
