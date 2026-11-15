@@ -14,7 +14,15 @@
 #            hash in the lock. A file changed by hand is kept and reported.
 #   owned    created from a template only when absent. Never overwritten.
 #
-# Prints one line per file: "<result> <path>". Needs bash, git, awk, sed and
+# Prints one line per file: "<result> <path>". Results of managed files:
+#   added    absent, copied
+#   same     already equal to this version
+#   updated  untouched since adoption, replaced by this version
+#   edited   changed by hand; this version brings nothing new for it
+#   kept     changed by hand (or there before adoption) and this version
+#            differs; the next line names the new version to compare with
+# Owned files: created (from the template) or exists (left alone).
+# Needs bash, git, awk, sed and
 # sha256sum or shasum.
 set -euo pipefail
 
@@ -67,9 +75,12 @@ while IFS= read -r src; do
     echo "same     $rel"; echo "file $new $rel $plugin" >> "$entries"
   elif [ -n "$old" ] && [ "$cur" = "$old" ]; then
     put "$src" "$dst"; echo "updated  $rel"; echo "file $new $rel $plugin" >> "$entries"
+  elif [ -n "$old" ] && [ "$old" = "$new" ]; then
+    # Changed by hand, and this version brings nothing new for it.
+    echo "edited   $rel"; echo "file $old $rel $plugin" >> "$entries"
   else
-    # Changed by hand, or it was there before the first adoption.
-    echo "kept     $rel"; echo "file ${old:-local} $rel $plugin" >> "$entries"
+    # Changed by hand (or there before the first adoption), and this version differs.
+    echo "kept     $rel"; echo "         new version: $src"; echo "file ${old:-local} $rel $plugin" >> "$entries"
   fi
 done < <([ -d "$assets/managed" ] && find -L "$assets/managed" -type f -not -path "*/__pycache__/*" | sort)
 

@@ -47,6 +47,8 @@ disable-model-invocation: true
 
 ## 新しい版に合わせる
 
+コピーするファイルの結果（`same`、`updated`、`edited`、`kept`）の読み方と、`kept` のときの手順は、`core` のスキル `adopt` の「新しい版に合わせる」と同じ。
+
 目録の項目が増えたときは、手順 3 から行う。`./.agents/knowledge-ids.txt` が新しくなり、増えた項目を対応表に足せるようになる。足すかどうかは、所有者に示す。
 
 ## 守ること

@@ -3,6 +3,8 @@
 #   1. `make check` passes right after adoption.
 #   2. A second run changes nothing.
 #   3. A managed file changed by hand is kept; an untouched one is updated.
+#      With a new version of the plugin, a hand-edited file it changes is kept
+#      and its new version named; taking the new version makes it the same.
 #   4. An owned file is never overwritten.
 #   5. A second plugin (aws-ops) keeps the lock lines of the first.
 #   6. aws-iac's check runs every step with stub tools, fails when a tool
@@ -48,11 +50,37 @@ stale_hash=$( (sha256sum "$stale" 2>/dev/null || shasum -a 256 "$stale") | cut -
 awk -v h="$stale_hash" '$3 == "docs/dev/docs-hygiene.md" { $2 = h } { print }' "$repo/.agents/methodology.lock" > "$work/lock.tmp"
 cp "$work/lock.tmp" "$repo/.agents/methodology.lock"
 bash "$adopt" "$repo" > "$work/third.log"
-grep -q '^kept     scripts/check-pr-size.sh$' "$work/third.log" || fail "a hand-edited managed file was not kept"
+grep -q '^edited   scripts/check-pr-size.sh$' "$work/third.log" || fail "a hand-edited managed file with nothing new upstream was not reported as edited"
 grep -q '^# local change$' "$repo/scripts/check-pr-size.sh" || fail "a hand-edited managed file was overwritten"
 grep -q '^updated  docs/dev/docs-hygiene.md$' "$work/third.log" || fail "an untouched stale managed file was not updated"
 bash "$adopt" "$repo" > "$work/fourth.log"
-grep -q '^kept     scripts/check-pr-size.sh$' "$work/fourth.log" || fail "a kept file was not reported on the next run"
+grep -q '^edited   scripts/check-pr-size.sh$' "$work/fourth.log" || fail "an edited file was not reported on the next run"
+
+# 3b. a new version of the plugin: a hand-edited file it changes is kept and named for comparison,
+#     an untouched one is updated, and nothing is lost from the lock
+newer="$work/newer-plugin"
+cp -RL "$PWD/plugins/core" "$newer"
+echo "# upstream change" >> "$newer/skills/adopt/assets/managed/scripts/check-pr-size.sh"
+echo "upstream change" >> "$newer/skills/adopt/assets/managed/docs/dev/docs-hygiene.md"
+bash "$newer/skills/adopt/adopt.sh" "$repo" > "$work/newer.log"
+grep -q '^kept     scripts/check-pr-size.sh$' "$work/newer.log" || fail "a hand-edited file that the new version changes was not kept"
+grep -qxF "         new version: $newer/skills/adopt/assets/managed/scripts/check-pr-size.sh" "$work/newer.log" \
+  || fail "the kept file's new version was not named"
+grep -q '^# local change$' "$repo/scripts/check-pr-size.sh" || fail "a hand-edited file was overwritten by a new version"
+grep -q '^updated  docs/dev/docs-hygiene.md$' "$work/newer.log" || fail "an untouched file was not updated to the new version"
+grep -q '^upstream change$' "$repo/docs/dev/docs-hygiene.md" || fail "the new version's content did not arrive"
+diff -u "$repo/scripts/check-pr-size.sh" "$newer/skills/adopt/assets/managed/scripts/check-pr-size.sh" > "$work/kept.diff" || true
+grep -q '^-# local change$' "$work/kept.diff" || fail "the diff of a kept file does not show the local change"
+grep -q '^+# upstream change$' "$work/kept.diff" || fail "the diff of a kept file does not show the new version's change"
+# Taking the new version by hand makes the file untouched again.
+cp "$newer/skills/adopt/assets/managed/scripts/check-pr-size.sh" "$repo/scripts/check-pr-size.sh"
+bash "$newer/skills/adopt/adopt.sh" "$repo" > "$work/newer2.log"
+grep -q '^same     scripts/check-pr-size.sh$' "$work/newer2.log" || fail "a file taken from the new version was not seen as the same"
+# Back to the current version for the rest of the test.
+bash "$adopt" "$repo" > /dev/null
+cp "$PWD/plugins/core/skills/adopt/assets/managed/scripts/check-pr-size.sh" "$repo/scripts/check-pr-size.sh"
+cp "$PWD/plugins/core/skills/adopt/assets/managed/docs/dev/docs-hygiene.md" "$repo/docs/dev/docs-hygiene.md"
+bash "$adopt" "$repo" > /dev/null
 
 # 4. an owned file is not overwritten
 echo "mine" > "$repo/AGENTS.md"
