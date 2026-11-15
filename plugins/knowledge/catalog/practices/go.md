@@ -22,7 +22,7 @@ Go の書き方の判断。言語によらない判断は、一般とテスト�
 | --- | --- |
 | ID | `go-table-driven-subtests` |
 | 出どころ | Go wiki「TableDrivenTests」。https://go.dev/wiki/TableDrivenTests 。Go wiki「Go Code Review Comments」の「Useful Test Failures」。https://go.dev/wiki/CodeReviewComments 。標準ライブラリ `testing` の文書。https://pkg.go.dev/testing |
-| ソース | `golang/wiki:TableDrivenTests.md@fe2268b`, `golang/wiki:CodeReviewComments.md@fe2268b`, `golang/go:src/testing/testing.go@7b28810` |
+| ソース | `golang/wiki:TableDrivenTests.md@fe2268b`, `golang/wiki:CodeReviewComments.md@fe2268b`, `golang/go:src/testing/testing.go@16d46ba` |
 | 何を言っているか | 表の 1 行が入力と期待を持つ 1 件で、`t.Run` に名前を付けて回す。名前は `-run` の `/` で区切った式で選べる。`t.Errorf` は止まらずに続けるので、どの入力で失敗するかの形が見える。失敗の文は入力・得た値・期待の順に書き、`got` を先にする。`t.Parallel` は `t.Setenv` や `t.Chdir` と一緒に使えない。`t.Context` は、`Cleanup` の関数を呼ぶ直前に取り消される。Go 1.22 からは、ループの変数を写し直す必要がない。 |
 | 確からしさ | 公式の推奨（Go のチームの wiki と標準ライブラリの文書）。wiki は、表を map にすると順序に依らないことを確かめられる、とも書く。誤用: 失敗の文に入力を書かず、どの行が落ちたか分からない。比べる補助の関数を自作して、失敗の文を貧しくする。 |
 | 当たるべき場面 | Go で事例の表のテスト（テストの束の「事例をデータの表にする」の Go での書き方）を書く、レビューするとき。テストを並行にするか決めるとき。テストで `context.Context` が要るとき。 |
