@@ -1,0 +1,11 @@
+# Written by ai-dev-methodologies (core) adopt.sh. Do not edit by hand.
+# file <sha256 at adoption | local> <path>: 'local' marks a file kept as found.
+source hassaku63/ai-dev-methodologies
+plugin core
+file 8b09e7df09fc7534371988062769ee427af2954a02c04c763e8a8005be0f2be4 .github/ISSUE_TEMPLATE/config.yml
+file ff0dfed34a803b3c84fe9e9ad70954b367b914e17cab91578b3ccf3589868ff2 .github/ISSUE_TEMPLATE/observation.md
+file 9a906638e5c85f3362d4877dac18b3c91510bcf9becac4dea4d234e98ad536c8 .github/ISSUE_TEMPLATE/proposal.md
+file ff84ec53c59ac350c73d41dcc5c8a14e451796697999646820597e34c8fd8cda docs/architecture/adr/0000-template.md
+file 82c2769552eb8d7593c707124a4ee65680aa868df4244bdc81102f2970ef628f docs/dev/docs-hygiene.md
+file 840153c500f459ab69be10d1873015aa36f2c03de89388c2028397239adee376 scripts/check-docs.sh
+file a2f65060484a54b2d05a24743e62a0efdec46ab62d0eeee3f6c1d85f35303086 scripts/check-pr-size.sh
