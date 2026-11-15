@@ -54,13 +54,17 @@
 
 | 規約 | 中身 | 前提にする手順 |
 | --- | --- | --- |
+| `<導入先>/scripts/iac-roots.txt` | 検査するインフラのコードの場所。導入先の所有者が書く | `make iac-check` |
+| `make iac-check` | インフラのコードの検査（`<導入先>/scripts/check-iac.sh`。実体は `plugins/aws-iac/skills/adopt/assets/managed/scripts/check-iac.sh`）。`make check` から呼ぶ | 完了の定義 |
 | `.terraform/` がコミットされない | plan のファイルと、その JSON を置く。plan には秘密情報が入りうる | `plan` |
 | 計画までの権限の認証情報 | エージェントが使う AWS の認証情報は、読み取りと、state の読み取りまでにする（ADR-0010） | すべて |
 | `python3` | フックとスクリプトが使う | すべて |
 
+導入はスキル `adopt`（`plugins/aws-iac/skills/adopt/SKILL.md`）で行う。`core` を先に導入しておく。
+
 ## 配るファイル
 
-種類の分け方は ADR-0003。ファイルの実体は、plugin ごとの `skills/adopt/assets/` にある（`plugins/core/skills/adopt/assets/`、`plugins/aws-ops/skills/adopt/assets/`）。導入のスクリプトは `core` のものを、ほかの plugin がシンボリックリンクで使う。
+種類の分け方は ADR-0003。ファイルの実体は、plugin ごとの `skills/adopt/assets/` にある（`plugins/core/skills/adopt/assets/`、`plugins/aws-ops/skills/adopt/assets/`、`plugins/aws-iac/skills/adopt/assets/`）。導入のスクリプトは `core` のものを、ほかの plugin がシンボリックリンクで使う。
 
 | 種類 | 場所 | 導入のとき | 新しい版に合わせるとき |
 | --- | --- | --- | --- |

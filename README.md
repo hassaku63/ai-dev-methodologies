@@ -16,7 +16,7 @@
 | --- | --- | --- |
 | `core` | すべての導入先 | 導入、Issue の流れ、実装とレビューのサブエージェント、文書の鮮度 |
 | `aws-ops` | AWS のインフラを調べて記録するリポジトリ | エージェントの AWS の操作を読み取りに限るフック。Security Hub の Finding を、アプリケーションの単位でまとめる手順（`/aws-ops:findings`）。ネットワークとコンピュートの構成の棚卸し（`/aws-ops:inventory`） |
-| `aws-iac` | Terraform や CDK で AWS のインフラを管理するリポジトリ | エージェントの操作を、変更の計画（plan、diff、synth）までに限るフック。`terraform plan` を、置き換えと削除が目立つ形で要約する手順（`/aws-iac:plan`） |
+| `aws-iac` | Terraform や CDK で AWS のインフラを管理するリポジトリ | エージェントの操作を、変更の計画（plan、diff、synth）までに限るフック。変更の計画を、置き換えと削除が目立つ形でまとめる手順（`/aws-iac:plan`）。インフラのコードの検査 |
 
 ## 導入先での使い方
 
@@ -36,6 +36,12 @@ AWS のインフラを調べて記録するリポジトリでは、続けて `aw
 
 ```bash
 claude plugin install aws-ops@ai-dev-methodologies --scope project
+```
+
+Terraform や CDK のリポジトリでは、`aws-iac` を入れ、`/aws-iac:adopt` を実行する。インフラのコードの検査が `make check` に入る。
+
+```bash
+claude plugin install aws-iac@ai-dev-methodologies --scope project
 ```
 
 ## 読む順
