@@ -28,10 +28,4 @@
 
 段階 3 と 4 は、会社のリポジトリを使えないので、架空の例を作って確かめる。実地での確認は所有者が行う。段階 3 と 4 の部品は、実際の AWS の環境、実際の Terraform と CDK、実際の Claude Code のセッションでは、まだ動かしていない。試し方は `docs/trial.md`。
 
-## あとで検討すること
-
-- 「あとで検討すること」を `observation` の Issue に移し、この節をなくす（`docs/dev/docs-hygiene.md` の規約）。
-- `make doctor` と `.tool-versions`、`actions-lint` を `core` で配るか（`docs/comparison-chord-rambler.md` の「`core` にないもの」）。
-- 役割の分担（指示書をファイルで渡す、実装に関わっていない目で確かめる、修正の回数に上限を置く）を、運用・管理の調査にどう当てるか。
-- エージェントの失敗を、検査 → フックと権限 → `AGENTS.md` の順で固定先を選ぶ手順を、スキルにするか。
-- 開発環境に限った反映（ADR-0005 の L3）を許す部品。環境の見分け方が要る。
+検討の途中のことは、`observation` と `proposal` の Issue にある。
