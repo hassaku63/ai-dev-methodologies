@@ -1,6 +1,6 @@
 # 出どころとの差（chord-rambler）
 
-`core` の導入のスクリプトを `hassaku63/chord-rambler`（コミット `ad3f1b0` の手元の写し）に当てて、手書きの版と比べた結果。`core` が何を持ち、何を持たないかの現在の状態。
+`core` の導入のスクリプトを `hassaku63/chord-rambler`（コミット `76ea655` の手元の写し）に当てて、手書きの版と比べた結果。`core` が何を持ち、何を持たないかの現在の状態。
 
 ## コピーするファイル
 
@@ -10,10 +10,10 @@
 | `scripts/check-pr-size.sh` | 数えないパスを、スクリプトの中ではなく `scripts/pr-size-excludes.txt` から読む | 同じパスを書くと、同じ行数を数える |
 | `docs/dev/docs-hygiene.md` | ADR の番号への参照を外した。誤検知のときに直す先を `core` にした | — |
 | `.github/ISSUE_TEMPLATE/observation.md` | 「画面、ブラウザ」を「環境、対象のリソース」にした | — |
-| `docs/architecture/adr/0000-template.md` | 同じ（導入先では索引の ADR の雛形が違えば残す） | — |
+| `docs/architecture/adr/0000-template.md` | 同じ | — |
 | `.github/ISSUE_TEMPLATE/proposal.md`、`config.yml` | 同じ | — |
 
-chord-rambler に導入すると、中身の違う 5 つは手で変えたものとして残る（ADR-0007）。`core` の版に置き換えるかどうかは、所有者が決める。
+chord-rambler に導入すると、中身の違う 4 つは手で変えたものとして残る（ADR-0007）。`core` の版に置き換えるかどうかは、所有者が決める。
 
 ## 導入先が所有するファイル
 
