@@ -84,4 +84,6 @@
 
 `advisor-at-decision-points`（Claude Code の文書）と `window-size-classes`（Apple の HIG。Android の文書は開いていない）も、同じ日に開き直した。
 
-それ以外の項目（Git のソースが無いもの、HCI の束、業界標準）は、このリポジトリでは出どころの中身を開き直していない（月次の報告が、出どころの URL が開けることと、記録したソースが変わっていないことを確かめる）。
+所有者がネットワークの許可を広げたあと、W3C、MDN、Docker の文書、NN/g、Martin Fowler、Sandi Metz、Jane Street に出どころを持つ 34 項目（一般の 5、HCI の 26、業界標準の 3）を、同じ日に開き直した（HCI の 26 項目は、確認日を開き直した日にした）。28 項目は合っていた。食い違った 6 項目（`motion-and-reduced-motion`、`choice-overload-defaults`、`contrast-wcag`、`dark-mode-polarity`、`buildkit-build-checks`、`fitts-target-size` の言い方）は直した。これらの項目のうち、論文や書籍にしか根拠の無い主張は、開き直していない（HCI の束の確からしさに「未確認」とあるもの）。
+
+それ以外の項目（ほかの出どころ）は、このリポジトリでは出どころの中身を開き直していない（月次の報告が、出どころの URL が開けることと、記録したソースが変わっていないことを確かめる）。
