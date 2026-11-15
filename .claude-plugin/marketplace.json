@@ -14,6 +14,11 @@
       "name": "aws-ops",
       "source": "./plugins/aws-ops",
       "description": "AWS のインフラを調べて記録するリポジトリ向け。エージェントの AWS の操作を読み取りに限り、Finding のまとめと構成の棚卸しを行う"
+    },
+    {
+      "name": "aws-iac",
+      "source": "./plugins/aws-iac",
+      "description": "Terraform や CDK で AWS のインフラを管理するリポジトリ向け。エージェントの操作を、変更の計画（plan、diff）までに限る"
     }
   ]
 }
