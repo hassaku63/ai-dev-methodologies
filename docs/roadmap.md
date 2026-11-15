@@ -14,7 +14,7 @@
 | 3c. 運用・管理: 導入 | `aws-ops` の導入の手順と、置き場所（`ops/`）の雛形。導入の記録を、複数の plugin で共有する | 空のリポジトリに `core` と `aws-ops` を続けて導入して、検査が通る（`make test-adopt`） | 済み |
 | 3d. 運用・管理: 構成の棚卸し | ネットワークとコンピュートの構成を取得して記録する手順とスクリプト。架空の例（`examples/ops-example/README.md`） | 架空の例で、棚卸しの記録ができる（`make test-inventory`） | 済み |
 | 4a. IaC: 計画までに限る | plugin `aws-iac` と、反映と state の操作を止めるフック（ADR-0010） | コマンドの表で、通す・止める・尋ねるを確かめてある（`make test-guard-iac`） | 済み |
-| 4b. IaC: plan の要約 | `terraform plan` の結果を、置き換えと削除が目立つ形で要約する手順とスクリプト。架空の例 | 架空の例で、要約ができる | 未着手 |
+| 4b. IaC: plan の要約 | `terraform plan` の結果を、置き換えと削除が目立つ形で要約する手順とスクリプト。架空の例（`examples/iac-example/README.md`） | 架空の例で、要約ができる（`make test-plan`） | 済み |
 | 4c. IaC: 導入と検査 | `aws-iac` の導入の手順。Terraform と CDK の検査（書式、検証、lint）を `make check` に入れる雛形。`cdk diff` の読み方 | 架空の例のリポジトリに導入して、検査が通る | 未着手 |
 | 5. 知識の索引と更新 | 鮮度つきの索引（プラクティス、標準）の使い方と検査、種になる項目。月次の報告のジョブ。手で変えたコピーの差分を示す手順の確かめ。Cursor と Codex 向けの出力 | 2 つ以上の導入先に更新を届けられる | 未着手 |
 

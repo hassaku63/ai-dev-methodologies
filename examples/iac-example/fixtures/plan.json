@@ -1,0 +1,236 @@
+{
+ "format_version": "1.2",
+ "terraform_version": "1.9.8",
+ "resource_changes": [
+  {
+   "address": "aws_db_instance.order",
+   "mode": "managed",
+   "type": "aws_db_instance",
+   "name": "order",
+   "provider_name": "registry.terraform.io/hashicorp/aws",
+   "change": {
+    "actions": [
+     "delete",
+     "create"
+    ],
+    "before": {
+     "identifier": "order-db",
+     "engine": "postgres",
+     "engine_version": "16.4",
+     "storage_encrypted": false,
+     "password": "fictional-old-password"
+    },
+    "after": {
+     "identifier": "order-db",
+     "engine": "postgres",
+     "engine_version": "16.4",
+     "storage_encrypted": true,
+     "password": "fictional-new-password"
+    },
+    "after_unknown": {
+     "arn": true
+    },
+    "replace_paths": [
+     [
+      "storage_encrypted"
+     ]
+    ]
+   },
+   "action_reason": "replace_because_cannot_update"
+  },
+  {
+   "address": "aws_sqs_queue.legacy_events",
+   "mode": "managed",
+   "type": "aws_sqs_queue",
+   "name": "legacy_events",
+   "provider_name": "registry.terraform.io/hashicorp/aws",
+   "change": {
+    "actions": [
+     "delete"
+    ],
+    "before": {
+     "name": "legacy-events"
+    },
+    "after": null,
+    "after_unknown": {}
+   },
+   "action_reason": "delete_because_no_resource_config"
+  },
+  {
+   "address": "aws_security_group_rule.bastion_ssh",
+   "mode": "managed",
+   "type": "aws_security_group_rule",
+   "name": "bastion_ssh",
+   "provider_name": "registry.terraform.io/hashicorp/aws",
+   "change": {
+    "actions": [
+     "delete"
+    ],
+    "before": {
+     "cidr_blocks": [
+      "0.0.0.0/0"
+     ],
+     "from_port": 22
+    },
+    "after": null,
+    "after_unknown": {}
+   },
+   "action_reason": "delete_because_no_resource_config"
+  },
+  {
+   "address": "aws_lambda_function.report_nightly",
+   "mode": "managed",
+   "type": "aws_lambda_function",
+   "name": "report_nightly",
+   "provider_name": "registry.terraform.io/hashicorp/aws",
+   "change": {
+    "actions": [
+     "update"
+    ],
+    "before": {
+     "function_name": "report-nightly",
+     "runtime": "python3.9",
+     "memory_size": 512,
+     "source_code_hash": "aaa"
+    },
+    "after": {
+     "function_name": "report-nightly",
+     "runtime": "python3.12",
+     "memory_size": 512
+    },
+    "after_unknown": {
+     "source_code_hash": true
+    }
+   }
+  },
+  {
+   "address": "aws_ecs_service.order_api",
+   "mode": "managed",
+   "type": "aws_ecs_service",
+   "name": "order_api",
+   "provider_name": "registry.terraform.io/hashicorp/aws",
+   "change": {
+    "actions": [
+     "update"
+    ],
+    "before": {
+     "name": "order-api",
+     "desired_count": 2
+    },
+    "after": {
+     "name": "order-api",
+     "desired_count": 3
+    },
+    "after_unknown": {}
+   }
+  },
+  {
+   "address": "aws_cloudwatch_metric_alarm.order_5xx",
+   "mode": "managed",
+   "type": "aws_cloudwatch_metric_alarm",
+   "name": "order_5xx",
+   "provider_name": "registry.terraform.io/hashicorp/aws",
+   "change": {
+    "actions": [
+     "create"
+    ],
+    "before": null,
+    "after": {
+     "alarm_name": "order-api-5xx"
+    },
+    "after_unknown": {
+     "arn": true
+    }
+   }
+  },
+  {
+   "address": "module.network.aws_vpc_endpoint.s3",
+   "mode": "managed",
+   "type": "aws_vpc_endpoint",
+   "name": "s3",
+   "provider_name": "registry.terraform.io/hashicorp/aws",
+   "change": {
+    "actions": [
+     "no-op"
+    ],
+    "before": {
+     "service_name": "com.amazonaws.ap-northeast-1.s3"
+    },
+    "after": {
+     "service_name": "com.amazonaws.ap-northeast-1.s3"
+    },
+    "after_unknown": {}
+   }
+  },
+  {
+   "address": "aws_s3_bucket.report_output",
+   "mode": "managed",
+   "type": "aws_s3_bucket",
+   "name": "report_output",
+   "provider_name": "registry.terraform.io/hashicorp/aws",
+   "change": {
+    "actions": [
+     "no-op"
+    ],
+    "before": {
+     "bucket": "example-report-output"
+    },
+    "after": {
+     "bucket": "example-report-output"
+    },
+    "after_unknown": {}
+   }
+  },
+  {
+   "address": "data.aws_caller_identity.current",
+   "mode": "data",
+   "type": "aws_caller_identity",
+   "name": "current",
+   "provider_name": "registry.terraform.io/hashicorp/aws",
+   "change": {
+    "actions": [
+     "read"
+    ],
+    "before": null,
+    "after": {
+     "account_id": "111122223333"
+    },
+    "after_unknown": {}
+   }
+  }
+ ],
+ "resource_drift": [
+  {
+   "address": "aws_ecs_service.order_api",
+   "mode": "managed",
+   "type": "aws_ecs_service",
+   "name": "order_api",
+   "provider_name": "registry.terraform.io/hashicorp/aws",
+   "change": {
+    "actions": [
+     "update"
+    ],
+    "before": {
+     "desired_count": 2
+    },
+    "after": {
+     "desired_count": 4
+    },
+    "after_unknown": {}
+   }
+  }
+ ],
+ "output_changes": {
+  "alarm_arn": {
+   "actions": [
+    "create"
+   ],
+   "after_unknown": true
+  },
+  "vpc_id": {
+   "actions": [
+    "no-op"
+   ]
+  }
+ }
+}

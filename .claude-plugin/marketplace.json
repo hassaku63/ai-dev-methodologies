@@ -18,7 +18,7 @@
     {
       "name": "aws-iac",
       "source": "./plugins/aws-iac",
-      "description": "Terraform や CDK で AWS のインフラを管理するリポジトリ向け。エージェントの操作を、変更の計画（plan、diff）までに限る"
+      "description": "Terraform や CDK で AWS のインフラを管理するリポジトリ向け。エージェントの操作を、変更の計画（plan、diff）までに限り、plan を要約する"
     }
   ]
 }

@@ -21,6 +21,7 @@ CI の `required (make check)` は `make check` をそのまま呼ぶ。必須�
 | `aws-iac` のフックのテスト（`scripts/test-guard-iac.py`。コマンドの表に対して、通す・止める・尋ねるを確かめる。Python 3 が要る） | 反映（apply、deploy、destroy）と、state を触る操作を通すこと。計画（plan、diff、synth）を止めて作業を妨げること | `make test-guard-iac` | `make check` |
 | Finding のまとめのテスト（`scripts/test-findings.sh`。架空の例の Finding から作った記録が、コミットした記録と一致する。Python 3 が要る） | まとめのスクリプトの振る舞いが、気づかずに変わること。対応が要らない Finding を数えること。誤った定義を受け付けること | `make test-findings` | `make check` |
 | 構成の棚卸しのテスト（`scripts/test-inventory.sh`。架空の例の取得結果から作った記録が、コミットした記録と一致する。取得のスクリプトを、偽の `aws` に対して走らせる。Python 3 が要る） | 記録のスクリプトの振る舞いが、気づかずに変わること。取得のスクリプトが、読み取りでない操作を呼ぶこと。1 つの失敗で取得が止まること。取れなかった部分を記録が黙って欠くこと。種類を問わない発見が取れなかったのに、記録がそれを言わないこと | `make test-inventory` | `make check` |
+| plan の要約のテスト（`scripts/test-plan.sh`。架空の例の plan から作った要約が、コミットした要約と一致する。Python 3 が要る） | 要約のスクリプトの振る舞いが、気づかずに変わること。属性の値（秘密情報を含みうる）が要約に載ること。データソースを変更として数えること | `make test-plan` | `make check` |
 | マーケットプレイスと plugin の定義（`claude` の CLI が要るので `make check` には入れない） | 定義の書き間違いで、導入先が plugin を読み込めないこと | `make plugin-validate` | 手元（plugin の定義を変えたとき） |
 
 ## 変更の大きさ

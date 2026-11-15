@@ -48,6 +48,16 @@
 
 導入はスキル `adopt`（`plugins/aws-ops/skills/adopt/SKILL.md`）で行う。`core` を先に導入しておく。
 
+## `aws-iac` を使う導入先
+
+`core` の規約に加えて、次を前提にする。
+
+| 規約 | 中身 | 前提にする手順 |
+| --- | --- | --- |
+| `.terraform/` がコミットされない | plan のファイルと、その JSON を置く。plan には秘密情報が入りうる | `plan` |
+| 計画までの権限の認証情報 | エージェントが使う AWS の認証情報は、読み取りと、state の読み取りまでにする（ADR-0010） | すべて |
+| `python3` | フックとスクリプトが使う | すべて |
+
 ## 配るファイル
 
 種類の分け方は ADR-0003。ファイルの実体は、plugin ごとの `skills/adopt/assets/` にある（`plugins/core/skills/adopt/assets/`、`plugins/aws-ops/skills/adopt/assets/`）。導入のスクリプトは `core` のものを、ほかの plugin がシンボリックリンクで使う。
