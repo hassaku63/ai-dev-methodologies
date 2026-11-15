@@ -50,6 +50,13 @@ practices test-doubles-prefer-real testing なし
 practices test-size-small-first testing なし
 practices test-via-public-api testing なし
 practices testing-library-queries test-tools-js @testing-library/react@16
+practices tf-count-vs-for-each terraform terraform@1
+practices tf-dependency-lock terraform terraform@1
+practices tf-import-blocks terraform terraform@1
+practices tf-lifecycle-cautions terraform terraform@1
+practices tf-moved-blocks terraform terraform@1
+practices tf-state-holds-secrets terraform terraform@1
+practices tf-test-creates-infrastructure terraform terraform@1
 practices transient-information hci なし
 practices ts-discriminated-unions typescript typescript@5
 practices ts-index-and-optional-undefined typescript typescript@5
