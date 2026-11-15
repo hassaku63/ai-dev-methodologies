@@ -63,7 +63,6 @@ GLOBAL_OPTIONS_WITH_VALUE = {
     "--cli-binary-format",
 }
 PUNCTUATION = set("();<>|&")
-EMBEDDED = re.compile(r"(^|[\s;|&(])aws\s")
 
 
 def is_read(operation):
@@ -113,8 +112,14 @@ def judge(args):
     return "allow", text
 
 
-def invocations(command, depth=0):
-    """Yields (decision, text) for every `aws` invocation found in command."""
+def invocations(command, judges=None, depth=0):
+    """Yields (decision, text) for every invocation of a judged command.
+
+    judges maps a command name to the function that judges its arguments;
+    by default only `aws` is judged.
+    """
+    judges = judges or {"aws": judge}
+    embedded = re.compile(r"(^|[\s;|&(])(" + "|".join(map(re.escape, judges)) + r")\s")
     # Command substitutions and new lines start a new command.
     # A backslash at the end of a line continues the same command.
     flat = command.replace("\\\n", " ")
@@ -124,30 +129,32 @@ def invocations(command, depth=0):
         lexer.whitespace_split = True
         tokens = list(lexer)
     except ValueError:
-        if EMBEDDED.search(command) or command.strip().startswith("aws"):
-            yield "ask", "an aws command that could not be parsed"
+        if embedded.search(" " + command):
+            yield "ask", "a command that could not be parsed"
         return
 
     i = 0
     while i < len(tokens):
         token = tokens[i]
-        if token == "aws" or token.endswith("/aws"):
+        name = token.rsplit("/", 1)[-1]
+        if name in judges:
             j = i + 1
             while j < len(tokens) and not set(tokens[j]) <= PUNCTUATION:
                 j += 1
-            yield judge(tokens[i + 1:j])
+            yield judges[name](tokens[i + 1:j])
             i = j
             continue
         # A quoted script: bash -c "aws ...", xargs sh -c '...'.
-        if EMBEDDED.search(token):
+        if embedded.search(token):
             if depth >= 3:
-                yield "ask", "a deeply nested aws command"
+                yield "ask", "a deeply nested command"
             else:
-                yield from invocations(token, depth + 1)
+                yield from invocations(token, judges, depth + 1)
         i += 1
 
 
-def main():
+def run(judges, blocked, undecided):
+    """The hook: reads the event on stdin, prints the decision, returns the exit code."""
     try:
         event = json.load(sys.stdin)
     except ValueError:
@@ -155,30 +162,33 @@ def main():
     if event.get("tool_name") != "Bash":
         return 0
     command = (event.get("tool_input") or {}).get("command") or ""
-    found = list(invocations(command))
+    found = list(invocations(command, judges))
     denied = [text for decision, text in found if decision == "deny"]
     asked = [text for decision, text in found if decision == "ask"]
 
     if denied:
-        print(
-            "aws-ops guard: blocked, not a read-only call: " + "; ".join(denied) + ".\n"
-            "This repository is at the 'investigate and report' level: the agent only "
-            "reads AWS. Do not look for another way to run it. Write the command into "
-            "the report as a proposed action for the owner.",
-            file=sys.stderr,
-        )
+        print(blocked.format("; ".join(denied)), file=sys.stderr)
         return 2
     if asked:
         json.dump({
             "hookSpecificOutput": {
                 "hookEventName": "PreToolUse",
                 "permissionDecision": "ask",
-                "permissionDecisionReason":
-                    "aws-ops guard could not tell whether this is read-only: "
-                    + "; ".join(asked),
+                "permissionDecisionReason": undecided.format("; ".join(asked)),
             }
         }, sys.stdout)
     return 0
+
+
+def main():
+    return run(
+        {"aws": judge},
+        "aws-ops guard: blocked, not a read-only call: {}.\n"
+        "This repository is at the 'investigate and report' level: the agent only "
+        "reads AWS. Do not look for another way to run it. Write the command into "
+        "the report as a proposed action for the owner.",
+        "aws-ops guard could not tell whether this is read-only: {}",
+    )
 
 
 if __name__ == "__main__":
