@@ -62,6 +62,15 @@
 
 導入はスキル `adopt`（`plugins/aws-iac/skills/adopt/SKILL.md`）で行う。`core` を先に導入しておく。
 
+## `knowledge` を使う導入先
+
+| 規約 | 中身 | 前提にする手順 |
+| --- | --- | --- |
+| `<導入先>/docs/knowledge/practices.md` | プラクティスの対応表。使う項目の ID、このリポジトリでの場面、このプロジェクトの立場。無ければ、目録を直接引く | `practices` |
+| `<導入先>/docs/knowledge/standards.md` | 業界標準の対応表。使う項目の ID と、このリポジトリとの接点。無ければ、目録を直接引く | `standards` |
+
+対応表の形と、その導入の手順は、まだ作っていない（`docs/roadmap.md`）。
+
 ## 配るファイル
 
 種類の分け方は ADR-0003。ファイルの実体は、plugin ごとの `skills/adopt/assets/` にある（`plugins/core/skills/adopt/assets/`、`plugins/aws-ops/skills/adopt/assets/`、`plugins/aws-iac/skills/adopt/assets/`）。導入のスクリプトは `core` のものを、ほかの plugin がシンボリックリンクで使う。

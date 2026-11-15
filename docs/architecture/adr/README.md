@@ -14,3 +14,4 @@
 | [0008](0008-contract-and-self-adoption.md) | 導入先が守る規約を 1 つの文書に持ち、このリポジトリ自身にも導入する |
 | [0009](0009-aws-read-only-guard.md) | 運用・管理のリポジトリでは、フックで AWS の操作を読み取りに限る |
 | [0010](0010-iac-plan-only-guard.md) | IaC のリポジトリでは、フックで操作を計画までに限る |
+| [0011](0011-knowledge-catalog-and-mapping.md) | 知識の索引は、中央の目録と、リポジトリの対応表に分ける |
