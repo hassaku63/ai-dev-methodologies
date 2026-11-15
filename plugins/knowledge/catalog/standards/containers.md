@@ -22,7 +22,7 @@
 | 発行元 | Docker, Inc.（BuildKit） |
 | 何を決めているか | Dockerfile とビルドの設定を、決まった規則（`UndefinedVar`、`SecretsUsedInArgOrEnv`、`CopyIgnoredFile`、`JSONArgsRecommended` など）で検査する仕組み。`docker build --check` は、ビルドを走らせずに検査だけを行い、違反があれば 0 でない終了コードで終わる。ふつうのビルドでは、違反は警告で、終了コードは 0。`check=error=true` の指令で、ふつうのビルドでも失敗にできる |
 | 一次情報 | 規則の一覧は https://docs.docker.com/reference/build-checks/ 。使い方は https://docs.docker.com/build/checks/ 。どちらも登録なしで読める |
-| 状態 | 現行。Dockerfile 1.8 と Buildx 0.15.0 から。規則は増えていく（experimental の印が付くものがある） |
+| 状態 | ベータ（Docker の文書の「Availability: Beta」）。Dockerfile 1.8 と Buildx 0.15.0 から。規則は増えていく（experimental の印が付くものがある） |
 | 当たるべき場面 | Dockerfile の検査を足す・変えるとき。hadolint と役割が重なるか確かめるとき。検査の違反を失敗にするかを決めるとき |
 | 確認 | 2026-11-15 / 間隔 90 日 |
 
