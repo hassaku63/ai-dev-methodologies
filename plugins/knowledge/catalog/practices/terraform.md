@@ -21,7 +21,7 @@ Terraform のコードと state の扱いの判断。反映（`terraform apply`�
 | 欄 | 内容 |
 | --- | --- |
 | ID | `tf-state-holds-secrets` |
-| 出どころ | HashiCorp「Manage sensitive data in your configuration」。https://developer.hashicorp.com/terraform/language/state/sensitive-data |
+| 出どころ | HashiCorp「Manage sensitive data in your configuration」。https://developer.hashicorp.com/terraform/language/manage-sensitive-data |
 | ソース | なし |
 | 何を言っているか | 設定に書いた秘密情報や、リソースの属性（初期のパスワード、トークン）は、state と plan のファイルにそのまま入る。手元の state は平文。`sensitive` は CLI の出力と画面で値を伏せるだけで、state には残る。state にも plan にも残さないには、ephemeral の値を使う（変数と子モジュールの出力の `ephemeral` と `ephemeral` ブロックは v1.10、管理するリソースの write-only の引数は v1.11 から。使えるものは provider ごとに違う）。state は、暗号化できるリモートの置き場所に置き、Git に入れない。 |
 | 確からしさ | 公式の推奨。リモートの state の暗号化の方法は、バックエンドごとに違う。誤用: `sensitive = true` を付けたので、state に秘密情報が残らないと考える。plan のファイルを、レビューのために PR や Issue に貼る。 |
