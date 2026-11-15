@@ -12,3 +12,4 @@
 | [0006](0006-claude-code-first-agents-md-canon.md) | Claude Code を既定にし、規則の正典は `AGENTS.md` に置く |
 | [0007](0007-managed-files-update-by-hash.md) | コピーしたファイルは、ハッシュで手直しを見分けて更新する |
 | [0008](0008-contract-and-self-adoption.md) | 導入先が守る規約を 1 つの文書に持ち、このリポジトリ自身にも導入する |
+| [0009](0009-aws-read-only-guard.md) | 運用・管理のリポジトリでは、フックで AWS の操作を読み取りに限る |

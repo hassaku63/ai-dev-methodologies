@@ -17,6 +17,7 @@ CI の `required (make check)` は `make check` をそのまま呼ぶ。必須�
 | --- | --- | --- | --- |
 | shellcheck（`scripts/*.sh` と、plugin が持つスクリプト、導入先にコピーするスクリプト） | 失敗を見ない `cd`、引用符のない展開など、シェルの典型的な誤り。導入先に誤りを配ること | `make shell-lint` | `make check` |
 | 導入のテスト（`scripts/test-adopt.sh`。空のリポジトリに `core` を導入する） | 導入した直後に `make check` が通らないこと。2 度目の実行で何かが変わること。手で変えたファイルや導入先が所有するファイルを上書きすること。`--dry-run` が書き込むこと | `make test-adopt` | `make check` |
+| `aws-ops` のフックのテスト（`scripts/test-guard-aws.py`。コマンドの表に対して、通す・止める・尋ねるを確かめる。Python 3 が要る） | 読み取りでない AWS の操作を通すこと。秘密情報やデータを読む操作を通すこと。読み取りを止めて調査を妨げること | `make test-guard-aws` | `make check` |
 | マーケットプレイスと plugin の定義（`claude` の CLI が要るので `make check` には入れない） | 定義の書き間違いで、導入先が plugin を読み込めないこと | `make plugin-validate` | 手元（plugin の定義を変えたとき） |
 
 ## 変更の大きさ

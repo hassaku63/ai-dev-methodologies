@@ -1,0 +1,5 @@
+{
+  "name": "aws-ops",
+  "description": "AWS のインフラを調べて記録するリポジトリ向け。エージェントの AWS の操作を読み取りに限る",
+  "author": { "name": "hassaku63" }
+}
