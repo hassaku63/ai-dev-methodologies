@@ -31,6 +31,12 @@ claude plugin install core@ai-dev-methodologies --scope project
 
 Claude Code のセッションで `/core:adopt` を実行すると、検査のスクリプトと雛形を置き、指示書と文書をそのリポジトリの内容で埋める。導入先が守る規約は `docs/contract.md`。
 
+AWS のインフラを調べて記録するリポジトリでは、続けて `aws-ops` を入れ、`/aws-ops:adopt` を実行する。記録の置き場所（`ops/`）ができる。
+
+```bash
+claude plugin install aws-ops@ai-dev-methodologies --scope project
+```
+
 ## 読む順
 
 1. `docs/concept.md`: 何を解決するか、導入先の種類、配り方

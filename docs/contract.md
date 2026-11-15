@@ -18,7 +18,7 @@
 | `docs/dev/docs-hygiene.md` | 文書の書き方と、自己点検の手順 | `docs-sync`、`reviewer` |
 | `docs/architecture/adr/` | ADR。索引は `README.md`、雛形は `0000-template.md` | `propose`、`implementer` |
 | `.github/ISSUE_TEMPLATE/proposal.md` | 企画の Issue の形 | `propose` |
-| `.agents/methodology.lock` | コピーしたファイルの、導入したときのハッシュ | `adopt` |
+| `.agents/methodology.lock` | コピーしたファイルの、導入したときのハッシュ。1 行に、ハッシュ、パス、plugin の名前を持つ | `adopt`（どの plugin のものも） |
 
 ## GitHub
 
@@ -36,15 +36,18 @@
 | --- | --- | --- |
 | `ops/apps.json` | アプリケーションの単位の定義。導入先の所有者が書く。書式は `plugins/aws-ops/skills/findings/group_findings.py` の冒頭 | `findings` |
 | `ops/findings/<日付>.md` | Finding をまとめた記録。スクリプトが作る | `findings` |
-| `ops/raw/` | AWS から取得したままの出力。`.gitignore` に入れ、コミットしない | `findings` |
+| `ops/raw/` | AWS から取得したままの出力。中の `.gitignore` が、コミットから外す | `findings` |
+| `ops/README.md` | 対象のアカウントとリージョン、読み取り専用の認証情報の用意の仕方。導入先の所有者が書く | `findings` |
 | 読み取り専用の認証情報 | エージェントが使う AWS の認証情報は、読み取り専用にする（ADR-0009） | すべて |
 | `python3` | フックとスクリプトが使う | すべて |
 
 記録にはアカウント ID やリソースの名前が入る。`aws-ops` を使う導入先は、非公開のリポジトリにする。
 
+導入はスキル `adopt`（`plugins/aws-ops/skills/adopt/SKILL.md`）で行う。`core` を先に導入しておく。
+
 ## 配るファイル
 
-種類の分け方は ADR-0003。ファイルの実体は `plugins/core/skills/adopt/assets/` にある。
+種類の分け方は ADR-0003。ファイルの実体は、plugin ごとの `skills/adopt/assets/` にある（`plugins/core/skills/adopt/assets/`、`plugins/aws-ops/skills/adopt/assets/`）。導入のスクリプトは `core` のものを、ほかの plugin がシンボリックリンクで使う。
 
 | 種類 | 場所 | 導入のとき | 新しい版に合わせるとき |
 | --- | --- | --- | --- |

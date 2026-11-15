@@ -40,10 +40,11 @@ ai-dev-methodologies で作業する人間と AI コーディングエージェ�
 | --- | --- | --- |
 | `.claude-plugin/marketplace.json` | マーケットプレイスの定義 | plugin を足したらここに載せる。`version` は書かない（導入先がコミットを追う） |
 | `plugins/core/skills/`、`plugins/core/agents/` | plugin で配る手順 | 導入先の規約（`docs/contract.md`）にあるパスとコマンドだけを前提にする |
-| `plugins/core/skills/adopt/adopt.sh` | 導入先にファイルを置くスクリプト | 振る舞いを変えたら `scripts/test-adopt.sh` に確かめを足す |
+| `plugins/core/skills/adopt/adopt.sh` | 導入先にファイルを置くスクリプト。ほかの plugin の `skills/adopt/adopt.sh` は、これへのシンボリックリンク | 振る舞いを変えたら `scripts/test-adopt.sh` に確かめを足す |
 | `plugins/core/skills/adopt/assets/managed/` | 導入先にそのままコピーするファイル | 導入先ごとに変えたくなるものを置かない |
 | `plugins/core/skills/adopt/assets/owned/` | 導入先が所有するファイルの雛形（末尾が `.tmpl`） | 導入先で埋める箇所は「（導入先で書く: …）」と書く |
 | `plugins/aws-ops/hooks/` | 運用・管理のリポジトリ向けのフック。AWS の操作を読み取りに限る（ADR-0009） | 通す操作を足したら `scripts/test-guard-aws.py` に行を足す。迷う操作は通さない |
+| `plugins/aws-ops/skills/adopt/assets/` | `aws-ops` の導入で置くファイル（`ops/` の置き場所） | `core` の `assets/` と同じ |
 | `plugins/aws-ops/skills/findings/` | Finding を、アプリケーションの単位でまとめる手順とスクリプト | 同じ入力から同じ記録を作る（時刻やネットワークを読まない）。出力を変えたら、架空の例の記録を作り直す |
 | `examples/ops-example/` | 部品を確かめるための、架空の運用・管理のリポジトリ | 実在の環境の値を入れない |
 | `docs/contract.md` | 導入先が守る規約 | 手順の前提と食い違わせない |
