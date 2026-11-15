@@ -5,6 +5,13 @@ practices affordances-signifiers hci なし
 practices aria-authoring-practices hci なし
 practices attention-capture-change-blindness hci なし
 practices beck-design-rules general なし
+practices cdk-compliance-guardrails cdk aws-cdk-lib@2
+practices cdk-deterministic-synthesis cdk aws-cdk-lib@2
+practices cdk-fine-grained-vs-snapshot-tests cdk aws-cdk-lib@2
+practices cdk-generated-names cdk aws-cdk-lib@2
+practices cdk-props-not-env-vars cdk aws-cdk-lib@2
+practices cdk-removal-and-retention cdk aws-cdk-lib@2
+practices cdk-stable-logical-ids cdk aws-cdk-lib@2
 practices choice-overload-defaults hci なし
 practices cognitive-load-coherence hci なし
 practices color-not-sole-means hci なし
