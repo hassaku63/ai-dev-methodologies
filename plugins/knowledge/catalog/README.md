@@ -82,7 +82,7 @@
 
 移すときに、当たるべき場面と判断の問いから chord-rambler に固有の例を外し、ID を足した。業界標準の「chord-rambler との接点」は、導入先の対応表の「このリポジトリとの接点」に当たるので外した。出どころ・何を言っているか・確からしさ（標準では何を決めているか・状態）・確認は、chord-rambler が出どころを開いて書いたものをそのまま使っている。Git のソースを持つ 22 項目（一般の 4、テストの 7、Go の 4、TypeScript の 2、React の 3、JavaScript のテストの道具の 2）は、このリポジトリで 2026-11-15 にソースを今の版で開き直し、要点を照らした。食い違った 2 項目（`what-to-look-for-in-review`、`property-based-tests`）は直した。`small-changes` の Martin Fowler の部分は、Git のソースが無く開いていない。
 
-`advisor-at-decision-points`（Claude Code の文書）と `window-size-classes`（Apple の HIG。Android の文書は開いていない）も、同じ日に開き直した。
+`advisor-at-decision-points`（Claude Code の文書）と `window-size-classes`（Apple の HIG と、Android Developers の 2 つの文書）も、同じ日に開き直した。
 
 所有者がネットワークの許可を広げたあと、W3C、MDN、Docker の文書、NN/g、Martin Fowler、Sandi Metz、Jane Street に出どころを持つ 34 項目（一般の 5、HCI の 26、業界標準の 3）を、同じ日に開き直した（HCI の 26 項目は、確認日を開き直した日にした）。28 項目は合っていた。食い違った 6 項目（`motion-and-reduced-motion`、`choice-overload-defaults`、`contrast-wcag`、`dark-mode-polarity`、`buildkit-build-checks`、`fitts-target-size` の言い方）は直した。これらの項目のうち、論文や書籍にしか根拠の無い主張は、開き直していない（HCI の束の確からしさに「未確認」とあるもの）。
 
