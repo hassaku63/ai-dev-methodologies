@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# A newer push to a pull request cancels its run. Every push to main runs to the end.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  # The one required check. It calls the same target as a local run.
+  check:
+    name: required (make check)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # On a pull request HEAD is the merge commit; its first parent is the base.
+          fetch-depth: 2
+      # shellcheck, git and make come with the runner image.
+      - run: make check
+      # Needs a base to compare with, so it is not part of `make check`.
+      - name: PR size budget (warn over 600 lines, fail over 1000)
+        if: github.event_name == 'pull_request'
+        run: make pr-size PR_BASE=HEAD^1

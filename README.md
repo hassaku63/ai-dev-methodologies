@@ -10,14 +10,29 @@
 - 部品を選ぶ・導入する・更新する仕組み
 - 公開してよい一般的な知識の索引
 
-現在は設計の土台だけがあり、配れる部品はまだない。進み具合は `docs/roadmap.md`。
+配れる部品は、どの導入先にも共通の手順を持つ plugin `core`。進み具合は `docs/roadmap.md`。
+
+## 導入先での使い方
+
+導入先のリポジトリで、マーケットプレイスを登録して `core` を入れる。
+
+```bash
+claude plugin marketplace add hassaku63/ai-dev-methodologies --scope project
+```
+
+```bash
+claude plugin install core@ai-dev-methodologies --scope project
+```
+
+Claude Code のセッションで `/core:adopt` を実行すると、検査のスクリプトと雛形を置き、指示書と文書をそのリポジトリの内容で埋める。導入先が守る規約は `docs/contract.md`。
 
 ## 読む順
 
 1. `docs/concept.md`: 何を解決するか、導入先の種類、配り方
 2. `docs/roadmap.md`: 段階と現在地
-3. `docs/architecture/adr/README.md`: 決定の記録
-4. `AGENTS.md`: このリポジトリで作業するときの規則
+3. `docs/contract.md`: 導入先が守る規約と、配るファイル
+4. `docs/architecture/adr/README.md`: 決定の記録
+5. `AGENTS.md`: このリポジトリで作業するときの規則
 
 ## 置かないもの
 

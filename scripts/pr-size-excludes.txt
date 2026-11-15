@@ -1,0 +1,4 @@
+# Paths that do not count toward the PR size budget (scripts/check-pr-size.sh).
+# One git pathspec pattern per line. Lock files and generated files belong here.
+# package-lock.json
+# *.gen.ts

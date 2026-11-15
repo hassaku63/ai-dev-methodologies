@@ -1,0 +1,5 @@
+{
+  "name": "core",
+  "description": "どの導入先にも共通の手順: 導入、Issue の流れ、実装とレビューのサブエージェント、文書の鮮度",
+  "author": { "name": "hassaku63" }
+}
