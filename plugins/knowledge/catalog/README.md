@@ -9,6 +9,11 @@
 | プラクティス | `practices/general.md` | 型と境界、抽象、変更の分け方とレビュー |
 | プラクティス | `practices/testing.md` | テストを何で、どう書くか |
 | プラクティス | `practices/agent-workflow.md` | エージェントとの作業の進め方 |
+| プラクティス | `practices/go.md` | Go |
+| プラクティス | `practices/typescript.md` | TypeScript |
+| プラクティス | `practices/react.md` | React |
+| プラクティス | `practices/test-tools-js.md` | JavaScript のテストの道具（Testing Library、Vitest） |
+| 業界標準 | `standards/containers.md` | コンテナとビルド（Dockerfile、BuildKit の Build checks、Compose） |
 
 ## 載せるもの・載せないもの
 
@@ -61,4 +66,9 @@
 
 ## 出どころ
 
-`practices/general.md`、`practices/testing.md`、`practices/agent-workflow.md` の 16 項目は、`hassaku63/chord-rambler` のプラクティスの索引（`hassaku63/chord-rambler:.claude/skills/practices/index.md@76ea655`）から移した。移すときに、当たるべき場面と判断の問いから chord-rambler に固有の例を外し、ID を足した。出どころ・何を言っているか・確からしさ・確認は、chord-rambler が出どころを開いて書いたものをそのまま使っている。このリポジトリでは、出どころを開き直していない。
+次の束は、`hassaku63/chord-rambler` の索引から移した。プラクティスは `hassaku63/chord-rambler:.claude/skills/practices/index.md@76ea655`、業界標準は `hassaku63/chord-rambler:.claude/skills/standards/index.md@76ea655`。
+
+- プラクティス: `practices/general.md`、`practices/testing.md`、`practices/agent-workflow.md`、`practices/go.md`、`practices/typescript.md`、`practices/react.md`、`practices/test-tools-js.md`
+- 業界標準: `standards/containers.md`
+
+移すときに、当たるべき場面と判断の問いから chord-rambler に固有の例を外し、ID を足した。業界標準の「chord-rambler との接点」は、導入先の対応表の「このリポジトリとの接点」に当たるので外した。出どころ・何を言っているか・確からしさ（標準では何を決めているか・状態）・確認は、chord-rambler が出どころを開いて書いたものをそのまま使っている。このリポジトリでは、出どころの中身を開き直していない（月次の報告が、出どころの URL が開けることと、記録したソースが変わっていないことを確かめる）。

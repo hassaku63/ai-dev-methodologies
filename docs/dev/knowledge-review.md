@@ -4,7 +4,7 @@
 
 ## 月次の報告
 
-`.github/workflows/knowledge-review.yml` が毎月 1 日に走る（手動でも走らせられる）。`scripts/knowledge-staleness.py` が次を調べ、指摘があれば `knowledge-review` ラベルの Issue を 1 つ作る。すでに開いていれば、本文を新しい報告で置き換える。
+`.github/workflows/knowledge-review.yml` が毎月 1 日に走る（手動でも走らせられる）。`scripts/knowledge-staleness.py` が次を調べ、指摘があれば `knowledge-review` ラベルの Issue を 1 つ作る。すでに開いていれば、本文を新しい報告で置き換える。目録・スクリプト・ワークフローを変えた PR では、報告だけを走らせる（Issue は触らない）。
 
 | 報告の節 | 意味 | すること |
 | --- | --- | --- |
