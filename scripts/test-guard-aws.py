@@ -24,6 +24,7 @@ CASES = [
     ("allow", "for r in us-east-1 us-west-2; do aws ec2 describe-subnets --region $r > $r.json; done"),
     ("allow", "ids=$(aws ec2 describe-instances --query 'Reservations[].Instances[].InstanceId' --output text)"),
     ("allow", "/usr/local/bin/aws iam list-roles"),
+    ("allow", "aws securityhub get-findings --region ap-northeast-1 --output json \\\n  --filters '{\"RecordState\":[{\"Value\":\"ACTIVE\",\"Comparison\":\"EQUALS\"}]}' \\\n  > ops/raw/findings/2026-11-01.json"),
     # not about aws
     ("allow", "git status"),
     ("allow", "ls plugins/aws-ops && cat docs/aws-notes.md"),
@@ -52,6 +53,7 @@ CASES = [
     ("deny", "aws sts assume-role --role-arn arn:aws:iam::111122223333:role/example --role-session-name x"),
     ("deny", "aws ecr get-login-password"),
     ("deny", "aws dynamodb get-item --table-name example --key '{}'"),
+    ("deny", "aws ssm get-parameter --name /example/password \\\n  --with-decryption"),
     # cannot tell
     ("ask", "aws ec2"),
     ("ask", "aws sso login --profile audit"),

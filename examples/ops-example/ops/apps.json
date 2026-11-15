@@ -1,0 +1,27 @@
+{
+  "apps": [
+    {
+      "name": "order-api",
+      "description": "注文を受け付ける API。ECS のサービスと、その前段のロードバランサー。",
+      "match": {
+        "tags": { "App": "order-api" },
+        "name_prefixes": ["order-"]
+      }
+    },
+    {
+      "name": "report-batch",
+      "description": "夜間に集計を作る Lambda の関数と、出力先のバケット。",
+      "match": {
+        "tags": { "App": "report-batch" },
+        "arn_patterns": ["arn:aws:lambda:*:*:function:report-*"]
+      }
+    },
+    {
+      "name": "sandbox",
+      "description": "検証用のアカウント。中のリソースはすべてここに入れる。",
+      "match": {
+        "accounts": ["444455556666"]
+      }
+    }
+  ]
+}
