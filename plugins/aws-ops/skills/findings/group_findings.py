@@ -165,6 +165,7 @@ def main():
     selected = findings if args.all else [f for f in findings if needs_attention(f)]
     report = render(build(selected, apps), apps, args.date, len(findings), len(selected))
     if args.out:
+        Path(args.out).parent.mkdir(parents=True, exist_ok=True)
         with open(args.out, "w", encoding="utf-8") as f:
             f.write(report)
     else:

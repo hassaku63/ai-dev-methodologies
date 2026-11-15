@@ -17,6 +17,8 @@ CASES = [
     ("allow", "aws s3api list-buckets && aws s3api get-bucket-policy --bucket example"),
     ("allow", "aws ssm get-parameter --name /example/flag"),
     ("allow", "aws configure list"),
+    ("allow", "aws configure get region --profile audit"),
+    ("allow", "aws configure get profile.audit.region"),
     ("allow", "aws ec2 help"),
     ("allow", "aws --version"),
     ("allow", "aws ec2 wait instance-running --instance-ids i-0123456789abcdef0"),
@@ -54,6 +56,8 @@ CASES = [
     ("deny", "aws ecr get-login-password"),
     ("deny", "aws dynamodb get-item --table-name example --key '{}'"),
     ("deny", "aws ssm get-parameter --name /example/password \\\n  --with-decryption"),
+    ("deny", "aws configure get aws_secret_access_key"),
+    ("deny", "aws configure get aws_session_token --profile audit"),
     # cannot tell
     ("ask", "aws ec2"),
     ("ask", "aws sso login --profile audit"),

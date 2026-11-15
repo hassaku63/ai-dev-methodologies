@@ -315,6 +315,7 @@ def main():
         out.append("")
     report = "\n".join(out).rstrip("\n") + "\n"
     if args.out:
+        Path(args.out).parent.mkdir(parents=True, exist_ok=True)
         with open(args.out, "w", encoding="utf-8") as f:
             f.write(report)
     else:

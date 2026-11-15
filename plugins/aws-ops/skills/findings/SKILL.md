@@ -24,7 +24,10 @@ Security Hub の Finding を、アプリケーションの単位でまとめる�
 
 1. **誰として読むかを確かめる。** `aws sts get-caller-identity` の結果（アカウントとロール）を所有者に示す。読み取り専用の認証情報でなければ、止めて所有者に伝える。
 2. **どこから取るかを決める。** Security Hub の集約リージョンがあればそこから、なければ対象のリージョンごとに取る。分からなければ所有者に尋ねる。
-3. **取得する。** 対応が要るものに絞って取る。出力は `ops/raw/findings/<日付>.json` に置く。`ops/raw/` が `.gitignore` に入っていることを先に確かめる。
+3. **取得する。** 対応が要るものに絞って取る。出力は `ops/raw/findings/<日付>.json` に置く。先に、`ops/raw/` がコミットから外れていることを `git check-ignore ops/raw/findings/x` で確かめる（`ops/raw/.gitignore` が外す）。外れていなければ、止めて所有者に伝える。
+   ```bash
+   mkdir -p ops/raw/findings ops/findings
+   ```
    ```bash
    aws securityhub get-findings --region <region> --output json \
      --filters '{"RecordState":[{"Value":"ACTIVE","Comparison":"EQUALS"}],"WorkflowStatus":[{"Value":"NEW","Comparison":"EQUALS"},{"Value":"NOTIFIED","Comparison":"EQUALS"}]}' \

@@ -30,4 +30,7 @@ if python3 "$script" --apps "$work/bad.json" "$ex/fixtures/findings.json" > /dev
   fail "an unknown matcher was accepted"
 fi
 
+python3 "$script" --apps "$ex/ops/apps.json" --out "$work/new/dir/report.md" "$ex/fixtures/findings.json"
+[ -s "$work/new/dir/report.md" ] || fail "the report was not written into a directory that did not exist"
+
 echo "test-findings: ok"
