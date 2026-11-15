@@ -18,7 +18,7 @@
 | 4c. IaC: 導入と検査 | `aws-iac` の導入の手順。Terraform と CDK の検査（書式、初期化と検証、lint、synth）を `make check` に入れるスクリプト。`cdk diff` の読み方 | 空のリポジトリに導入して、偽の道具に対して検査が段をすべて走らせる（`make test-adopt`） | 済み |
 | 5a. 知識: 目録の形と、最初の束 | plugin `knowledge`。目録の項目の形と検査、使い方のスキル。一般、テスト、エージェントとの作業の進め方の束（`hassaku63/chord-rambler` から移す）（ADR-0011） | 目録の形の検査が通る（`make catalog-check`） | 済み |
 | 5b. 知識: 対応表と導入 | 導入のときに、技術から束を選び、対応表の雛形を作る。対応表の形と、目録にない ID を落とす検査を配る | 空のリポジトリに導入して、対応表の検査が通り、よくある誤りを落とす（`make test-adopt`） | 済み |
-| 5c. 知識: 依存の版の検査 | 目録の項目の対象の版と、導入先の依存（`package.json`、`go.mod`、`pyproject.toml`、`.terraform.lock.hcl`）の食い違いを落とす | 架空の例で、食い違いが落ちる | 未着手 |
+| 5c. 知識: 依存の版の検査 | 目録の項目の対象の版と、導入先の依存（`package.json`、`go.mod`、`pyproject.toml`、`.terraform.lock.hcl`）の食い違いを落とす | 導入のテストで、食い違いが落ち、版が合えば通る（`make test-adopt`） | 済み |
 | 5d. 知識: 鮮度の報告 | このリポジトリで、目録の見直しの期限、リンク切れ、ソースの変更を月次に報告するジョブ | 報告のスクリプトが、架空の期限切れを挙げる | 未着手 |
 | 5e. 知識: 技術の束 | TypeScript、React、テストの道具、Go、Dockerfile（chord-rambler から移す）。Terraform、CDK、Python、Vue（新しく書く）。HCI（含めるかは所有者の判断待ち、#13） | 束ごとに、目録の形の検査が通る | 未着手 |
 | 5f. 更新と、ほかの道具 | 手で変えたコピーの差分を示す手順の確かめ。Cursor と Codex 向けの出力 | 2 つ以上の導入先に更新を届けられる | 未着手 |
