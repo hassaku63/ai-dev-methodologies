@@ -41,6 +41,11 @@ practices perceptual-color-spaces hci なし
 practices preattentive-signaling hci なし
 practices progressive-disclosure hci なし
 practices property-based-tests testing なし
+practices py-abstract-vs-pinned-requirements python なし
+practices py-aware-datetime python python@3
+practices py-library-logging python python@3
+practices py-src-layout python なし
+practices py-subprocess-no-shell python python@3
 practices react-effect-fetch-cleanup react react@19
 practices react-state-single-owner react react@19
 practices react-you-might-not-need-an-effect react react@19
