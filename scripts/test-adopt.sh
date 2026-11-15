@@ -5,6 +5,8 @@
 #   3. A managed file changed by hand is kept; an untouched one is updated.
 #   4. An owned file is never overwritten.
 #   5. A second plugin (aws-ops) keeps the lock lines of the first.
+#   6. aws-iac's check runs every step with stub tools, fails when a tool
+#      fails or is missing, and calls nothing its guard would stop.
 # Part of `make check`. Needs bash, git, make.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -69,7 +71,51 @@ touch "$second/ops/raw/fetched.json"
 [ -z "$(git -C "$second" status --porcelain -- ops/raw/fetched.json)" ] || fail "ops/raw is not ignored"
 make -C "$second" check > "$work/check2.log" 2>&1 || { cat "$work/check2.log" >&2; fail "make check does not pass after aws-ops"; }
 
-# 6. --dry-run writes nothing
+# 6. aws-iac adds its check; with stub tools the check runs every step and fails when one fails
+bash "$PWD/plugins/aws-iac/skills/adopt/adopt.sh" "$second" > "$work/iac.log"
+grep -q '^added    scripts/check-iac.sh$' "$work/iac.log" || fail "aws-iac did not add scripts/check-iac.sh"
+grep -q ' aws-ops$' "$second/.agents/methodology.lock" || fail "aws-iac dropped lines of aws-ops from the lock"
+mkdir -p "$second/envs/dev" "$second/infra" "$work/stub"
+echo 'terraform {}' > "$second/envs/dev/main.tf"
+echo '{}' > "$second/infra/cdk.json"
+touch "$second/envs/dev/.tflint.hcl"
+printf 'terraform envs/dev\ncdk infra  # the app\n' >> "$second/scripts/iac-roots.txt"
+for tool in terraform tflint npx; do
+  cat > "$work/stub/$tool" <<STUB
+#!/usr/bin/env bash
+echo "$tool \$*" >> "\$STUB_LOG"
+[ "\${STUB_FAIL:-}" != "$tool" ]
+STUB
+  chmod +x "$work/stub/$tool"
+done
+STUB_LOG="$work/iac-calls.log" PATH="$work/stub:$PATH" bash "$second/scripts/check-iac.sh" > "$work/iac-check.log" 2>&1 \
+  || { cat "$work/iac-check.log" >&2; fail "check-iac.sh failed with passing tools"; }
+for call in 'terraform fmt -check -recursive -diff envs/dev' 'terraform -chdir=envs/dev init -backend=false -input=false' \
+            'terraform -chdir=envs/dev validate' 'tflint --chdir=envs/dev' 'npx cdk synth --quiet'; do
+  grep -qxF -- "$call" "$work/iac-calls.log" || fail "check-iac.sh did not run: $call"
+done
+python3 - "$work/iac-calls.log" <<'PY' || fail "check-iac.sh made a call the aws-iac guard would not let through"
+import sys
+sys.path.insert(0, "plugins/aws-iac/hooks")
+from guard_iac import JUDGES
+bad = []
+for line in open(sys.argv[1]).read().splitlines():
+    name, *args = line.split()
+    if name in JUDGES and JUDGES[name](args)[0] != "allow":
+        bad.append(line)
+    if name == "npx" and JUDGES["cdk"](args[1:])[0] != "allow":
+        bad.append(line)
+print("\n".join(bad), file=sys.stderr)
+sys.exit(1 if bad else 0)
+PY
+if STUB_FAIL=tflint STUB_LOG="$work/iac-calls2.log" PATH="$work/stub:$PATH" bash "$second/scripts/check-iac.sh" > /dev/null 2>&1; then
+  fail "check-iac.sh passed although a tool failed"
+fi
+if STUB_LOG=/dev/null PATH="/usr/bin:/bin" bash "$second/scripts/check-iac.sh" > /dev/null 2>&1; then
+  fail "check-iac.sh passed although the tools are missing"
+fi
+
+# 7. --dry-run writes nothing
 dry="$work/dry"; mkdir "$dry"; git -C "$dry" init -q
 bash "$adopt" --dry-run "$dry" > /dev/null
 [ "$(ls -A "$dry")" = ".git" ] || fail "--dry-run wrote files"
