@@ -37,6 +37,7 @@
 | `ops/apps.json` | アプリケーションの単位の定義。導入先の所有者が書く。書式は `plugins/aws-ops/lib/apps.py` の冒頭 | `findings`、`inventory` |
 | `ops/findings/<日付>.md` | Finding をまとめた記録。スクリプトが作る | `findings` |
 | `ops/inventory.md` | 構成の棚卸しの記録。スクリプトが作り、毎回上書きする | `inventory` |
+| `ops/inventory-notes.md` | 棚卸しの記録に詳しい表が無い種類のリソースについての補足。エージェントが書き、毎回書き直す | `inventory` |
 | `ops/raw/` | AWS から取得したままの出力。中の `.gitignore` が、コミットから外す | `findings`、`inventory` |
 | `ops/README.md` | 対象のアカウントとリージョン、読み取り専用の認証情報の用意の仕方。導入先の所有者が書く | `findings`、`inventory` |
 | 読み取り専用の認証情報 | エージェントが使う AWS の認証情報は、読み取り専用にする（ADR-0009） | すべて |

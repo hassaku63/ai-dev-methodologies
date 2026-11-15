@@ -15,6 +15,7 @@ the network. Python 3 standard library only.
 """
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -22,6 +23,20 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "lib"))
 from apps import app_of, load_apps  # noqa: E402
 
 ANYWHERE = {"0.0.0.0/0", "::/0"}
+
+# Types the tables of this record describe in detail, as "<service>:<type>"
+# taken from the ARN. Every other type found by discovery is listed by ARN.
+DETAILED = {
+    "ec2:vpc", "ec2:subnet", "ec2:route-table", "ec2:internet-gateway", "ec2:natgateway",
+    "ec2:vpc-endpoint", "ec2:vpc-peering-connection", "ec2:security-group", "ec2:instance",
+    "elasticloadbalancing:loadbalancer", "lambda:function", "rds:db", "ecs:cluster", "ecs:service",
+}
+SOURCES = [
+    ("discovered-config", "AWS Config"),
+    ("discovered-tagged", "タグ付けの API"),
+    ("discovered-explorer", "Resource Explorer"),
+]
+LISTED_PER_TYPE = 10
 
 
 def load(region_dir, name, key):
@@ -128,9 +143,86 @@ def network(region_dir):
     return out
 
 
+def arn_type(arn):
+    """"<service>:<type>" of an ARN; the service alone when the ARN names no type."""
+    parts = arn.split(":", 5)
+    if len(parts) < 6 or parts[0] != "arn":
+        return None
+    match = re.match(r"([A-Za-z0-9_-]+)[/:]", parts[5])
+    return f"{parts[2]}:{match.group(1)}" if match else parts[2]
+
+
+def discovered(region_dir):
+    """ARN -> {"sources": set of labels, "tags": dict}, and the labels that answered."""
+    found, answered = {}, []
+
+    def add(arn, label, tags):
+        if not arn or arn_type(arn) is None:
+            return
+        entry = found.setdefault(arn, {"sources": set(), "tags": {}})
+        entry["sources"].add(label)
+        entry["tags"].update(tags)
+
+    for name, label in SOURCES:
+        path = region_dir / f"{name}.json"
+        if not path.exists():
+            continue
+        answered.append(label)
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        for raw in data.get("Results", []):  # Config: each result is a JSON string
+            item = json.loads(raw) if isinstance(raw, str) else raw
+            tags = {t.get("key"): t.get("value") for t in item.get("tags") or [] if t.get("key")}
+            add(item.get("arn"), label, tags)
+        for item in data.get("ResourceTagMappingList", []):  # tagging API
+            add(item.get("ResourceARN"), label, {t["Key"]: t["Value"] for t in item.get("Tags") or []})
+        for item in data.get("Resources", []):  # Resource Explorer
+            add(item.get("Arn"), label, {})
+    return found, answered
+
+
+def discovery(region_dir, app):
+    found, answered = discovered(region_dir)
+    out = ["", "### すべての種類", ""]
+    if not answered:
+        out += ["**種類を問わない発見は、どの出どころからも取れなかった。** この記録は、上の表が扱う種類だけを含む。"
+                "ほかの種類のリソースがあっても、ここには現れない。", ""]
+        return out
+    silent = [label for _, label in SOURCES if label not in answered]
+    out += ["種類を問わずに見つけたリソースの数。出どころ: " + "、".join(answered) + "。"
+            + (f"取れなかった出どころ: {'、'.join(silent)}。" if silent else ""),
+            "出どころには漏れがある（AWS Config は記録の対象の種類だけ、タグ付けの API はタグを持つか持ったことのあるものだけ、"
+            "Resource Explorer は索引のあるリージョンで 1000 件まで）。ここに無いことは、無いことの証明にならない。", ""]
+    by_type = {}
+    for arn, entry in found.items():
+        by_type.setdefault(arn_type(arn), []).append((arn, entry))
+    out += table(["種類", "数", "詳しい表", "出どころ"], [
+        [code(t), len(items), "あり" if t in DETAILED else "なし",
+         "、".join(label for _, label in SOURCES if any(label in e["sources"] for _, e in items))]
+        for t, items in sorted(by_type.items())])
+    others = {t: items for t, items in by_type.items() if t not in DETAILED}
+    if others:
+        out += ["", "詳しい表が無い種類のリソース。必要なものは、個別に読み取って調べる。", ""]
+        for t, items in sorted(others.items()):
+            out += [f"{code(t)}（{len(items)} 件）", ""]
+            for arn, entry in sorted(items)[:LISTED_PER_TYPE]:
+                belongs = app(arn, entry["tags"])
+                line = f"- {code(arn)}"
+                if belongs != "—":
+                    line += f" アプリケーション: {belongs}"
+                elif entry["tags"]:
+                    line += " タグ: " + ", ".join(f"{k}={v}" for k, v in sorted(entry["tags"].items()))
+                out.append(line)
+            if len(items) > LISTED_PER_TYPE:
+                out.append(f"- ほか {len(items) - LISTED_PER_TYPE} 件")
+            out.append("")
+        out.pop()
+    return out
+
+
 def region_section(region_dir, apps, account):
     out = [f"## {region_dir.name}", ""]
-    missing = sorted(p.stem for p in region_dir.glob("*.error"))
+    missing = sorted(p.name[:-len(".error")] for p in region_dir.glob("*.error"))
     if missing:
         out += ["取得できなかったもの（権限かサービスの状態による。該当する表は欠けている）: "
                 + "、".join(code(m) for m in missing), ""]
@@ -196,6 +288,7 @@ def region_section(region_dir, apps, account):
         [d.get("DBInstanceIdentifier"), app(d.get("DBInstanceArn", "")),
          f"{d.get('Engine')} {d.get('EngineVersion')}", d.get("DBInstanceClass"),
          yes(d.get("MultiAZ")), yes(d.get("PubliclyAccessible"))] for d in dbs])
+    out += discovery(region_dir, app)
     return out
 
 

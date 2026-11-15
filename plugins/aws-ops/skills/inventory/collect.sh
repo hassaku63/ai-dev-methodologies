@@ -7,7 +7,8 @@
 #   <name>.error with the message and the script goes on, so a missing
 #   permission for one service does not stop the rest.
 #
-# Every call is a describe-* or list-* operation: nothing is changed. The
+# Every call is a read (describe-*, list-*, get-*, select-*, search): nothing is
+# changed. The
 # credential and profile come from the environment (AWS_PROFILE and so on).
 # Needs bash, the aws CLI and python3.
 set -uo pipefail
@@ -52,6 +53,16 @@ for region in "$@"; do
   fetch "$region" lambda-functions lambda list-functions
   fetch "$region" db-instances rds describe-db-instances
   fetch "$region" ecs-clusters ecs list-clusters
+
+  # Discovery: every resource the account knows of, whatever its type, so that
+  # types without a table of their own still show up in the record. Each source
+  # has gaps (Config: recorded types only; tagging: resources that have or had
+  # tags; Resource Explorer: needs an index, at most 1000 results), so all
+  # three are tried and the record says which ones answered.
+  fetch "$region" discovered-config configservice select-resource-config \
+    --expression "SELECT arn, resourceType, resourceName, tags WHERE awsRegion = '$region'"
+  fetch "$region" discovered-tagged resourcegroupstaggingapi get-resources
+  fetch "$region" discovered-explorer resource-explorer-2 search --query-string "region:$region"
 
   # ECS services: list per cluster, then describe ten at a time (the API limit).
   if [ -f "$out/$region/ecs-clusters.json" ]; then
