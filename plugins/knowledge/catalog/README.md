@@ -16,6 +16,7 @@
 | プラクティス | `practices/terraform.md` | Terraform |
 | プラクティス | `practices/cdk.md` | AWS CDK（v2） |
 | プラクティス | `practices/python.md` | Python |
+| プラクティス | `practices/vue.md` | Vue（v3） |
 | プラクティス | `practices/hci.md` | 画面と操作の設計（HCI、認知心理学、インタラクションデザイン、アクセシビリティ） |
 | 業界標準 | `standards/containers.md` | コンテナとビルド（Dockerfile、BuildKit の Build checks、Compose） |
 
@@ -70,7 +71,7 @@
 
 ## 出どころ
 
-`practices/terraform.md`、`practices/cdk.md`、`practices/python.md` は、このリポジトリで一次情報（HashiCorp と AWS の文書、cdk-nag の README、Python の文書、Python Packaging User Guide）を開いて書いた。
+`practices/terraform.md`、`practices/cdk.md`、`practices/python.md`、`practices/vue.md` は、このリポジトリで一次情報（HashiCorp と AWS の文書、cdk-nag の README、Python の文書、Python Packaging User Guide、Vue の文書）を開いて書いた。
 
 次の束は、`hassaku63/chord-rambler` の索引から移した。プラクティスは `hassaku63/chord-rambler:.claude/skills/practices/index.md@76ea655`、業界標準は `hassaku63/chord-rambler:.claude/skills/standards/index.md@76ea655`。
 

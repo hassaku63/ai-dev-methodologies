@@ -74,6 +74,12 @@ practices ts-discriminated-unions typescript typescript@5
 practices ts-index-and-optional-undefined typescript typescript@5
 practices usability-heuristics hci なし
 practices vitest-mock-restore test-tools-js vitest@5
+practices vue-composition-vs-options vue vue@3
+practices vue-computed-pure vue vue@3
+practices vue-prefer-ref vue vue@3
+practices vue-props-one-way vue vue@3
+practices vue-test-public-interface vue vue@3
+practices vue-watcher-cleanup vue vue@3
 practices what-to-look-for-in-review general なし
 practices window-size-classes hci なし
 practices wrong-abstraction general なし
