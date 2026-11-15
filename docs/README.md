@@ -18,4 +18,5 @@
 
 - [dev/workflow.md](dev/workflow.md) — Issue と PR で回す開発ループ、完了の定義
 - [dev/docs-hygiene.md](dev/docs-hygiene.md) — 文書の鮮度を保つ規則と自己点検
+- [dev/knowledge-review.md](dev/knowledge-review.md) — 知識の目録が古くなったことに気づき、確かめ直す手順
 - [dev/harness.md](dev/harness.md) — `make check` と CI が行う検査の一覧
