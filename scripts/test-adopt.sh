@@ -219,6 +219,26 @@ assert ("1", "27") == v["go"][0][:2], v.get("go")
 assert ("5", "70") == v["hashicorp/aws"][0][:2], v.get("hashicorp/aws")
 assert len(v["react"]) == 1, v["react"]
 PY
+# Python: a lock file wins over the ranges in pyproject.toml; without one, the lower bound is used
+mkdir -p "$second/svc" "$second/lib"
+printf '[project]\nname = "svc"\nrequires-python = ">=3.12"\ndependencies = ["Requests>=2.0"]\n' > "$second/svc/pyproject.toml"
+printf 'version = 1\n\n[[package]]\nname = "requests"\nversion = "2.32.3"\n\n[[package]]\nname = "Typing_Extensions"\nversion = "4.12.2"\n' > "$second/svc/uv.lock"
+printf '[project]\nname = "lib"\ndependencies = ["boto3[crt] >= 1.35, <2", "attrs"]\n' > "$second/lib/pyproject.toml"
+printf '[[package]]\nname = "pydantic"\nversion = "2.9.2"\n' > "$second/poetry.lock"
+python3 - "$second" <<'PY' || fail "Python dependency versions were not read from pyproject.toml, uv.lock or poetry.lock"
+import importlib.util, sys
+spec = importlib.util.spec_from_file_location("ck", sys.argv[1] + "/scripts/check-knowledge.py")
+ck = importlib.util.module_from_spec(spec); spec.loader.exec_module(ck)
+v = ck.used_versions()
+got = {name: sorted((m, n, f) for m, n, f in rows) for name, rows in v.items()}
+assert [r[:2] for r in got["requests"]] == [("2", "32")], got.get("requests")  # the lock, not ">=2.0"
+assert ("4", "12") == got["typing-extensions"][0][:2], got.get("typing-extensions")
+assert ("1", "35") == got["boto3"][0][:2], got.get("boto3")
+assert "attrs" not in got, got.get("attrs")
+assert ("2", "9") == got["pydantic"][0][:2], got.get("pydantic")
+assert ("3", "12") == got["python"][0][:2], got.get("python")
+PY
+rm -r "${second:?}/svc" "${second:?}/lib" "${second:?}/poetry.lock"
 rm -r "${second:?}/web" "${second:?}/.tool-versions" "${second:?}/envs/dev/.terraform.lock.hcl"
 cp "$work/practices.orig" "$practices"
 
