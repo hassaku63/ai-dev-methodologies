@@ -8,7 +8,7 @@
 
 | 規約 | 中身 | 前提にする手順 |
 | --- | --- | --- |
-| `AGENTS.md` | 規則の正典。150 行まで | すべて |
+| `AGENTS.md` | 規則の正典。150 行まで。Cursor は、最上位と下位のディレクトリの `AGENTS.md` を設定なしで読む（Cursor の文書「Rules」、2026-11-15 に確認） | すべて |
 | `CLAUDE.md` | `@AGENTS.md` と、Claude Code に固有の補足 | すべて |
 | `make check` | すべての検査を呼ぶ 1 つのコマンド。CI も同じものを呼ぶ | `implementer`、完了の定義 |
 | `make docs-check` | 文書の検査（`scripts/check-docs.sh`） | `docs-sync` |
