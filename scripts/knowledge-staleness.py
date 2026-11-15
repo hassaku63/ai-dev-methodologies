@@ -81,7 +81,8 @@ def check_urls(found):
             broken.append(f"- {url}（{getattr(e, 'reason', e)}）")
             continue
         def bare(u):
-            return re.sub(r"^https?://", "", u).rstrip("/")
+            # The fragment never reaches the server, and a trailing slash or http->https is not a move.
+            return re.sub(r"^https?://", "", u.split("#", 1)[0]).rstrip("/")
         if bare(url) != bare(final):
             moved.append(f"- {url} → {final}")
     return broken, moved, refused
