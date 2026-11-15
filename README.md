@@ -52,6 +52,10 @@ claude plugin install aws-iac@ai-dev-methodologies --scope project
 4. `docs/architecture/adr/README.md`: 決定の記録
 5. `AGENTS.md`: このリポジトリで作業するときの規則
 
+## 試す
+
+実際のリポジトリで試す手順と、結果の報告の仕方は `docs/trial.md`。
+
 ## 置かないもの
 
 会社や組織に固有の規則・構成・識別子は置かない（ADR-0004）。このリポジトリは公開されている。

@@ -7,6 +7,7 @@
 - [concept.md](concept.md) — 何を解決するか、導入先の種類、配り方、出どころ
 - [roadmap.md](roadmap.md) — 段階、現在地、あとで検討すること
 - [comparison-chord-rambler.md](comparison-chord-rambler.md) — 出どころ（chord-rambler）の手書きの版と `core` の差
+- [trial.md](trial.md) — 実際のリポジトリで試す手順と、導入先のセッションに報告を作らせるプロンプト
 - [contract.md](contract.md) — 導入先が守る規約（パス、コマンド、ラベル）と、配るファイルの一覧
 
 ## 設計
