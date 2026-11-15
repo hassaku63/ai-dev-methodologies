@@ -66,6 +66,8 @@ def judge_terraform(args, name="terraform"):
         return "allow", text
     sub = positional[0]
     second = positional[1] if len(positional) > 1 else None
+    if sub == "workspace" and second == "select" and any(f.startswith("-or-create") for f in flags):
+        return "deny", text + " -or-create (creates a workspace in the backend)"
     if sub in TERRAFORM_NESTED:
         if second in TERRAFORM_NESTED[sub]:
             return "allow", text

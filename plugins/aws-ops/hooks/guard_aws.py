@@ -52,8 +52,10 @@ DECRYPTING = {
 # Services whose commands do not follow the verb pattern: allowed operations.
 SPECIAL = {
     "s3": {"ls"},
-    "configure": {"list", "list-profiles", "get"},
+    "configure": {"list", "list-profiles"},
 }
+# `aws configure get <key>` prints the value of a setting; only these hold no secret.
+CONFIGURE_GET_SAFE = {"region", "output", "cli_pager", "sso_region", "sso_start_url"}
 # Signing in is for the owner to do.
 ASK_SERVICES = {"sso", "login", "logout"}
 
@@ -100,6 +102,11 @@ def judge(args):
     operation = positional[1]
     if operation == "help":
         return "allow", text
+    if service == "configure" and operation == "get":
+        key = next((a for a in args[args.index("get") + 1:] if not a.startswith("-")), "")
+        if key.rsplit(".", 1)[-1] in CONFIGURE_GET_SAFE:
+            return "allow", text
+        return "deny", text + " (may print a credential)"
     if service in SPECIAL:
         return ("allow" if operation in SPECIAL[service] else "deny"), text
     if not is_read(operation):
@@ -110,6 +117,18 @@ def judge(args):
     if key in DECRYPTING and "--with-decryption" in flags:
         return "deny", text + " --with-decryption (reads a secret value)"
     return "allow", text
+
+
+# Packages run through npx, pnpm dlx or bunx under another name.
+ALIASES = {"aws-cdk": "cdk"}
+
+
+def command_name(token):
+    """The command a token runs: the last path part, without an @version (cdk@2, aws-cdk@2.150.0)."""
+    name = token.rsplit("/", 1)[-1]
+    if "@" in name[1:]:
+        name = name[:name.index("@", 1)]
+    return ALIASES.get(name, name)
 
 
 def invocations(command, judges=None, depth=0):
@@ -136,7 +155,7 @@ def invocations(command, judges=None, depth=0):
     i = 0
     while i < len(tokens):
         token = tokens[i]
-        name = token.rsplit("/", 1)[-1]
+        name = command_name(token)
         if name in judges:
             j = i + 1
             while j < len(tokens) and not set(tokens[j]) <= PUNCTUATION:
