@@ -13,6 +13,7 @@
 | プラクティス | `practices/typescript.md` | TypeScript |
 | プラクティス | `practices/react.md` | React |
 | プラクティス | `practices/test-tools-js.md` | JavaScript のテストの道具（Testing Library、Vitest） |
+| プラクティス | `practices/hci.md` | 画面と操作の設計（HCI、認知心理学、インタラクションデザイン、アクセシビリティ） |
 | 業界標準 | `standards/containers.md` | コンテナとビルド（Dockerfile、BuildKit の Build checks、Compose） |
 
 ## 載せるもの・載せないもの
@@ -70,5 +71,7 @@
 
 - プラクティス: `practices/general.md`、`practices/testing.md`、`practices/agent-workflow.md`、`practices/go.md`、`practices/typescript.md`、`practices/react.md`、`practices/test-tools-js.md`
 - 業界標準: `standards/containers.md`
+
+`practices/hci.md` は、`hassaku63/middy` の HCI の索引（`hassaku63/middy:.claude/skills/hci/index.md@bfbd6ba`）から移した。middy の欄から、例（適切・不適切な例）と middy との接点を外した。middy の確認日の欄にあった「何を開いて確かめたか」は、確からしさの末尾に「確かめた範囲」として残した。middy で出どころを開けていなかった 3 項目は、束の「外したもの」に置いた。
 
 移すときに、当たるべき場面と判断の問いから chord-rambler に固有の例を外し、ID を足した。業界標準の「chord-rambler との接点」は、導入先の対応表の「このリポジトリとの接点」に当たるので外した。出どころ・何を言っているか・確からしさ（標準では何を決めているか・状態）・確認は、chord-rambler が出どころを開いて書いたものをそのまま使っている。このリポジトリでは、出どころの中身を開き直していない（月次の報告が、出どころの URL が開けることと、記録したソースが変わっていないことを確かめる）。
