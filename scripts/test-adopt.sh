@@ -4,6 +4,7 @@
 #   2. A second run changes nothing.
 #   3. A managed file changed by hand is kept; an untouched one is updated.
 #   4. An owned file is never overwritten.
+#   5. A second plugin (aws-ops) keeps the lock lines of the first.
 # Part of `make check`. Needs bash, git, make.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -52,7 +53,23 @@ bash "$adopt" "$repo" > "$work/fifth.log"
 grep -q '^exists   AGENTS.md$' "$work/fifth.log" || fail "an owned file was not reported as existing"
 [ "$(cat "$repo/AGENTS.md")" = "mine" ] || fail "an owned file was overwritten"
 
-# 5. --dry-run writes nothing
+# 5. a second plugin adds its files and keeps the first plugin's lines in the lock
+second="$work/second"; mkdir "$second"; git -C "$second" init -q
+bash "$adopt" "$second" > /dev/null
+core_lines=$(grep -c ' core$' "$second/.agents/methodology.lock")
+bash "$PWD/plugins/aws-ops/skills/adopt/adopt.sh" "$second" > "$work/ops.log"
+grep -q '^added    ops/raw/.gitignore$' "$work/ops.log" || fail "aws-ops did not add ops/raw/.gitignore"
+grep -q '^created  ops/apps.json$' "$work/ops.log" || fail "aws-ops did not create ops/apps.json"
+[ "$(grep -c ' core$' "$second/.agents/methodology.lock")" = "$core_lines" ] || fail "aws-ops dropped lines of core from the lock"
+grep -q '^file [0-9a-f]* ops/raw/.gitignore aws-ops$' "$second/.agents/methodology.lock" || fail "the lock has no line for aws-ops"
+bash "$adopt" "$second" > "$work/core-again.log"
+if grep -Eqv '^(same|exists) ' "$work/core-again.log"; then fail "core changed something after aws-ops"; fi
+grep -q ' aws-ops$' "$second/.agents/methodology.lock" || fail "core dropped lines of aws-ops from the lock"
+touch "$second/ops/raw/fetched.json"
+[ -z "$(git -C "$second" status --porcelain -- ops/raw/fetched.json)" ] || fail "ops/raw is not ignored"
+make -C "$second" check > "$work/check2.log" 2>&1 || { cat "$work/check2.log" >&2; fail "make check does not pass after aws-ops"; }
+
+# 6. --dry-run writes nothing
 dry="$work/dry"; mkdir "$dry"; git -C "$dry" init -q
 bash "$adopt" --dry-run "$dry" > /dev/null
 [ "$(ls -A "$dry")" = ".git" ] || fail "--dry-run wrote files"

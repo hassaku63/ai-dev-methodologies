@@ -1,0 +1,3 @@
+# Raw output fetched from AWS stays out of git.
+*
+!.gitignore

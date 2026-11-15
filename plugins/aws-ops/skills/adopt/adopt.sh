@@ -1,0 +1,1 @@
+../../../core/skills/adopt/adopt.sh
