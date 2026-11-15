@@ -17,7 +17,8 @@ For entries whose 対象 names a technology and version (`react@19`,
 `go@1.27`, `hashicorp/aws@5`), the version this repository uses is read from
 its dependency files (package-lock.json or package.json, go.mod,
 .tool-versions, .terraform-version, .terraform.lock.hcl, requirements*.txt,
-.python-version) and a different version fails: the entry was written for
+uv.lock, poetry.lock, pyproject.toml, .python-version) and a different version
+fails: the entry was written for
 another version, so re-open its source before relying on it. A technology the
 repository does not use is not checked.
 
@@ -124,13 +125,46 @@ def used_versions():
         text = path.read_text(encoding="utf-8")
         for m in re.finditer(r'provider\s+"(?:[^"/]+/)?([^"]+)"\s*\{[^}]*?version\s*=\s*"([^"]+)"', text, re.S):
             add(m.group(1), m.group(2), path)
-    for pattern in ("requirements*.txt",):
-        for path in tracked(pattern):
-            for line in path.read_text(encoding="utf-8").splitlines():
-                m = re.match(r"^([A-Za-z0-9_.-]+)\s*==\s*(\S+)", line)
-                if m:
-                    add(m.group(1).lower(), m.group(2), path)
+    for path in tracked("requirements*.txt"):
+        for line in path.read_text(encoding="utf-8").splitlines():
+            m = re.match(r"^([A-Za-z0-9_.-]+)\s*==\s*(\S+)", line)
+            if m:
+                add(python_name(m.group(1)), m.group(2), path)
+    for name in ("uv.lock", "poetry.lock"):
+        for path in tracked(name):
+            for package in read_toml(path).get("package", []):
+                if package.get("name") and package.get("version"):
+                    add(python_name(package["name"]), package["version"], path)
+    for path in tracked("pyproject.toml"):
+        data = read_toml(path)
+        project = data.get("project") or {}
+        if project.get("requires-python"):
+            add("python", project["requires-python"], path)
+        # A lock file next to it says which versions are in use; the ranges here do not.
+        if (path.parent / "uv.lock").exists() or (path.parent / "poetry.lock").exists():
+            continue
+        for spec in project.get("dependencies") or []:
+            m = re.match(r"^\s*([A-Za-z0-9_.-]+)(?:\[[^\]]*\])?\s*(?:==|~=|>=)\s*([0-9][^,;\s]*)", spec)
+            if m:
+                add(python_name(m.group(1)), m.group(2), path)
     return found
+
+
+def python_name(name):
+    """A Python package name in its normalized form (PEP 503): lower case, runs of -_. as -."""
+    return re.sub(r"[-_.]+", "-", name).lower()
+
+
+def read_toml(path):
+    """The parsed TOML file, or {} when this Python has no tomllib (before 3.11)."""
+    try:
+        import tomllib
+    except ImportError:
+        print(f"knowledge-check: skipped {path.relative_to(ROOT)} (reading TOML needs Python 3.11 or later)",
+              file=sys.stderr)
+        return {}
+    with open(path, "rb") as f:
+        return tomllib.load(f)
 
 
 def check_versions(path, used_ids, targets, versions):
