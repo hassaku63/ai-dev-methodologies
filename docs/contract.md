@@ -28,6 +28,20 @@
 | エージェントのブランチ | 名前が `claude/` で始まる。未マージの PR の数え方に使う |
 | 必須のチェック | CI の `required (make check)` の 1 つ |
 
+## `aws-ops` を使う導入先
+
+`core` の規約に加えて、次を前提にする。
+
+| 規約 | 中身 | 前提にする手順 |
+| --- | --- | --- |
+| `ops/apps.json` | アプリケーションの単位の定義。導入先の所有者が書く。書式は `plugins/aws-ops/skills/findings/group_findings.py` の冒頭 | `findings` |
+| `ops/findings/<日付>.md` | Finding をまとめた記録。スクリプトが作る | `findings` |
+| `ops/raw/` | AWS から取得したままの出力。`.gitignore` に入れ、コミットしない | `findings` |
+| 読み取り専用の認証情報 | エージェントが使う AWS の認証情報は、読み取り専用にする（ADR-0009） | すべて |
+| `python3` | フックとスクリプトが使う | すべて |
+
+記録にはアカウント ID やリソースの名前が入る。`aws-ops` を使う導入先は、非公開のリポジトリにする。
+
 ## 配るファイル
 
 種類の分け方は ADR-0003。ファイルの実体は `plugins/core/skills/adopt/assets/` にある。

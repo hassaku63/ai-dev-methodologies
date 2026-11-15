@@ -116,7 +116,9 @@ def judge(args):
 def invocations(command, depth=0):
     """Yields (decision, text) for every `aws` invocation found in command."""
     # Command substitutions and new lines start a new command.
-    flat = command.replace("$(", " ; ").replace("`", " ; ").replace("\n", " ; ")
+    # A backslash at the end of a line continues the same command.
+    flat = command.replace("\\\n", " ")
+    flat = flat.replace("$(", " ; ").replace("`", " ; ").replace("\n", " ; ")
     try:
         lexer = shlex.shlex(flat, posix=True, punctuation_chars=True)
         lexer.whitespace_split = True

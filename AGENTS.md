@@ -44,6 +44,8 @@ ai-dev-methodologies で作業する人間と AI コーディングエージェ�
 | `plugins/core/skills/adopt/assets/managed/` | 導入先にそのままコピーするファイル | 導入先ごとに変えたくなるものを置かない |
 | `plugins/core/skills/adopt/assets/owned/` | 導入先が所有するファイルの雛形（末尾が `.tmpl`） | 導入先で埋める箇所は「（導入先で書く: …）」と書く |
 | `plugins/aws-ops/hooks/` | 運用・管理のリポジトリ向けのフック。AWS の操作を読み取りに限る（ADR-0009） | 通す操作を足したら `scripts/test-guard-aws.py` に行を足す。迷う操作は通さない |
+| `plugins/aws-ops/skills/findings/` | Finding を、アプリケーションの単位でまとめる手順とスクリプト | 同じ入力から同じ記録を作る（時刻やネットワークを読まない）。出力を変えたら、架空の例の記録を作り直す |
+| `examples/ops-example/` | 部品を確かめるための、架空の運用・管理のリポジトリ | 実在の環境の値を入れない |
 | `docs/contract.md` | 導入先が守る規約 | 手順の前提と食い違わせない |
 | `docs/architecture/adr/` | 決定の記録 | 索引に載せる |
 | `scripts/`、`docs/dev/docs-hygiene.md`、`.github/ISSUE_TEMPLATE/` | このリポジトリ自身に導入した `core` のコピー | 直接は変えない。`assets/managed/` の方を変えて、導入し直す |
@@ -53,6 +55,7 @@ make check            # すべての検査（CI は同じターゲットを呼�
 make docs-check       # 文書の検査だけ
 make test-adopt       # 空のリポジトリに core を導入して確かめる
 make test-guard-aws   # aws-ops のフックを、コマンドの表で確かめる
+make test-findings    # Finding のまとめを、架空の例で確かめる
 make plugin-validate  # マーケットプレイスと plugin の定義（claude の CLI が要る）
 bash plugins/core/skills/adopt/adopt.sh .   # このリポジトリに core を導入し直す
 ```
@@ -61,7 +64,7 @@ bash plugins/core/skills/adopt/adopt.sh .   # このリポジトリに core を�
 
 - Conventional Commits（`feat:`, `fix:`, `docs:`, `test:`, `chore:`, `refactor:`, `ci:`）。
 - コミットメッセージ・コード・コメントにモデル名や生成ツールの宣伝を書かない。
-- 文書は日本語で書く。スクリプトのコメントと出力は英語で書く。
+- 文書は日本語で書く。スクリプトのコメントと、検査やエラーの出力は英語で書く。スクリプトが作る記録（所有者が読む文書）は日本語で書く。
 
 ## 6. 文書の鮮度
 

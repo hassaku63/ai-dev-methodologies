@@ -1,0 +1,432 @@
+{
+  "Findings": [
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-northeast-1:111122223333:finding/0001",
+      "ProductName": "Security Hub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-northeast-1",
+      "Title": "Security groups should not allow unrestricted access to ports with high risk",
+      "Severity": {
+        "Label": "CRITICAL"
+      },
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Resources": [
+        {
+          "Type": "AwsEc2SecurityGroup",
+          "Id": "arn:aws:ec2:ap-northeast-1:111122223333:security-group/sg-0aaa1111bbbb2222c",
+          "Tags": {
+            "App": "order-api",
+            "Env": "prod"
+          }
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "EC2.19"
+      },
+      "Remediation": {
+        "Recommendation": {
+          "Url": "https://docs.aws.amazon.com/console/securityhub/EC2.19/remediation"
+        }
+      }
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-northeast-1:111122223333:finding/0002",
+      "ProductName": "Security Hub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-northeast-1",
+      "Title": "Security groups should not allow unrestricted access to ports with high risk",
+      "Severity": {
+        "Label": "CRITICAL"
+      },
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Resources": [
+        {
+          "Type": "AwsEc2SecurityGroup",
+          "Id": "arn:aws:ec2:ap-northeast-1:111122223333:security-group/sg-0ddd3333eeee4444f"
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "EC2.19"
+      },
+      "Remediation": {
+        "Recommendation": {
+          "Url": "https://docs.aws.amazon.com/console/securityhub/EC2.19/remediation"
+        }
+      }
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-northeast-1:111122223333:finding/0003",
+      "ProductName": "Security Hub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-northeast-1",
+      "Title": "ECS task definitions should have secure networking modes and user definitions",
+      "Severity": {
+        "Label": "HIGH"
+      },
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Resources": [
+        {
+          "Type": "AwsEcsTaskDefinition",
+          "Id": "arn:aws:ecs:ap-northeast-1:111122223333:task-definition/order-api:42"
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "ECS.1"
+      },
+      "Remediation": {
+        "Recommendation": {
+          "Url": "https://docs.aws.amazon.com/console/securityhub/ECS.1/remediation"
+        }
+      }
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-northeast-1:111122223333:finding/0004",
+      "ProductName": "Security Hub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-northeast-1",
+      "Title": "Application Load Balancer should be configured to redirect all HTTP requests to HTTPS",
+      "Severity": {
+        "Label": "MEDIUM"
+      },
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Resources": [
+        {
+          "Type": "AwsElbv2LoadBalancer",
+          "Id": "arn:aws:elasticloadbalancing:ap-northeast-1:111122223333:loadbalancer/app/order-alb/50dc6c495c0c9188"
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "ELB.1"
+      },
+      "Remediation": {
+        "Recommendation": {
+          "Url": "https://docs.aws.amazon.com/console/securityhub/ELB.1/remediation"
+        }
+      }
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-northeast-1:111122223333:finding/0005",
+      "ProductName": "Security Hub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-northeast-1",
+      "Title": "Lambda functions should use supported runtimes",
+      "Severity": {
+        "Label": "MEDIUM"
+      },
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Resources": [
+        {
+          "Type": "AwsLambdaFunction",
+          "Id": "arn:aws:lambda:ap-northeast-1:111122223333:function:report-nightly"
+        },
+        {
+          "Type": "AwsLambdaFunction",
+          "Id": "arn:aws:lambda:ap-northeast-1:111122223333:function:report-export"
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "Lambda.2"
+      },
+      "Remediation": {
+        "Recommendation": {
+          "Url": "https://docs.aws.amazon.com/console/securityhub/Lambda.2/remediation"
+        }
+      }
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-northeast-1:111122223333:finding/0006",
+      "ProductName": "Security Hub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-northeast-1",
+      "Title": "S3 general purpose buckets should block public access",
+      "Severity": {
+        "Label": "HIGH"
+      },
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Resources": [
+        {
+          "Type": "AwsS3Bucket",
+          "Id": "arn:aws:s3:::example-report-output",
+          "Tags": {
+            "App": "report-batch"
+          }
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "S3.8"
+      },
+      "Remediation": {
+        "Recommendation": {
+          "Url": "https://docs.aws.amazon.com/console/securityhub/S3.8/remediation"
+        }
+      }
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-northeast-1:111122223333:finding/0007",
+      "ProductName": "Security Hub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-northeast-1",
+      "Title": "S3 general purpose buckets should block public access",
+      "Severity": {
+        "Label": "HIGH"
+      },
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Resources": [
+        {
+          "Type": "AwsS3Bucket",
+          "Id": "arn:aws:s3:::example-old-uploads",
+          "Tags": {
+            "Owner": "unknown"
+          }
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "S3.8"
+      },
+      "Remediation": {
+        "Recommendation": {
+          "Url": "https://docs.aws.amazon.com/console/securityhub/S3.8/remediation"
+        }
+      }
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:us-east-1:444455556666:finding/0008",
+      "ProductName": "Security Hub",
+      "AwsAccountId": "444455556666",
+      "Region": "us-east-1",
+      "Title": "IAM users' access keys should be rotated every 90 days or less",
+      "Severity": {
+        "Label": "MEDIUM"
+      },
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Resources": [
+        {
+          "Type": "AwsIamUser",
+          "Id": "arn:aws:iam::444455556666:user/trial-user"
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "IAM.3"
+      },
+      "Remediation": {
+        "Recommendation": {
+          "Url": "https://docs.aws.amazon.com/console/securityhub/IAM.3/remediation"
+        }
+      }
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:us-east-1:444455556666:finding/0009",
+      "ProductName": "Security Hub",
+      "AwsAccountId": "444455556666",
+      "Region": "us-east-1",
+      "Title": "EC2 instances should not have a public IPv4 address",
+      "Severity": {
+        "Label": "HIGH"
+      },
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Resources": [
+        {
+          "Type": "AwsEc2Instance",
+          "Id": "arn:aws:ec2:us-east-1:444455556666:instance/i-0123456789abcdef0"
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "EC2.9"
+      },
+      "Remediation": {
+        "Recommendation": {
+          "Url": "https://docs.aws.amazon.com/console/securityhub/EC2.9/remediation"
+        }
+      }
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-northeast-1:111122223333:finding/0010",
+      "ProductName": "Inspector",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-northeast-1",
+      "Title": "CVE-2026-0001 - openssl",
+      "Severity": {
+        "Label": "HIGH"
+      },
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Resources": [
+        {
+          "Type": "AwsEcrContainerImage",
+          "Id": "arn:aws:ecr:ap-northeast-1:111122223333:repository/order-api/sha256:0f0f0f",
+          "Tags": {
+            "App": "order-api"
+          }
+        }
+      ]
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-northeast-1:111122223333:finding/0011",
+      "ProductName": "Security Hub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-northeast-1",
+      "Title": "RDS DB instances should have deletion protection enabled",
+      "Severity": {
+        "Label": "LOW"
+      },
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Resources": [
+        {
+          "Type": "AwsRdsDbInstance",
+          "Id": "arn:aws:rds:ap-northeast-1:111122223333:db:order-db"
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "RDS.8"
+      },
+      "Remediation": {
+        "Recommendation": {
+          "Url": "https://docs.aws.amazon.com/console/securityhub/RDS.8/remediation"
+        }
+      }
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-northeast-1:111122223333:finding/0012",
+      "ProductName": "Security Hub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-northeast-1",
+      "Title": "EBS default encryption should be enabled",
+      "Severity": {
+        "Label": "MEDIUM"
+      },
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "SUPPRESSED"
+      },
+      "Resources": [
+        {
+          "Type": "AwsAccount",
+          "Id": "AWS::::Account:111122223333"
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "EC2.7"
+      },
+      "Remediation": {
+        "Recommendation": {
+          "Url": "https://docs.aws.amazon.com/console/securityhub/EC2.7/remediation"
+        }
+      }
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-northeast-1:111122223333:finding/0013",
+      "ProductName": "Security Hub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-northeast-1",
+      "Title": "CloudTrail should be enabled and configured with at least one multi-Region trail",
+      "Severity": {
+        "Label": "HIGH"
+      },
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Resources": [
+        {
+          "Type": "AwsAccount",
+          "Id": "AWS::::Account:111122223333"
+        }
+      ],
+      "Compliance": {
+        "Status": "PASSED",
+        "SecurityControlId": "CloudTrail.1"
+      },
+      "Remediation": {
+        "Recommendation": {
+          "Url": "https://docs.aws.amazon.com/console/securityhub/CloudTrail.1/remediation"
+        }
+      }
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-northeast-1:111122223333:finding/0014",
+      "ProductName": "Security Hub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-northeast-1",
+      "Title": "VPC default security groups should not allow inbound or outbound traffic",
+      "Severity": {
+        "Label": "HIGH"
+      },
+      "RecordState": "ARCHIVED",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Resources": [
+        {
+          "Type": "AwsEc2SecurityGroup",
+          "Id": "arn:aws:ec2:ap-northeast-1:111122223333:security-group/sg-0999888877776666a"
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "EC2.2"
+      },
+      "Remediation": {
+        "Recommendation": {
+          "Url": "https://docs.aws.amazon.com/console/securityhub/EC2.2/remediation"
+        }
+      }
+    }
+  ]
+}
