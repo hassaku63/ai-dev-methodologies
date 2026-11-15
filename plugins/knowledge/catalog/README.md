@@ -82,4 +82,6 @@
 
 移すときに、当たるべき場面と判断の問いから chord-rambler に固有の例を外し、ID を足した。業界標準の「chord-rambler との接点」は、導入先の対応表の「このリポジトリとの接点」に当たるので外した。出どころ・何を言っているか・確からしさ（標準では何を決めているか・状態）・確認は、chord-rambler が出どころを開いて書いたものをそのまま使っている。Git のソースを持つ 22 項目（一般の 4、テストの 7、Go の 4、TypeScript の 2、React の 3、JavaScript のテストの道具の 2）は、このリポジトリで 2026-11-15 にソースを今の版で開き直し、要点を照らした。食い違った 2 項目（`what-to-look-for-in-review`、`property-based-tests`）は直した。`small-changes` の Martin Fowler の部分は、Git のソースが無く開いていない。
 
+`advisor-at-decision-points`（Claude Code の文書）と `window-size-classes`（Apple の HIG。Android の文書は開いていない）も、同じ日に開き直した。
+
 それ以外の項目（Git のソースが無いもの、HCI の束、業界標準）は、このリポジトリでは出どころの中身を開き直していない（月次の報告が、出どころの URL が開けることと、記録したソースが変わっていないことを確かめる）。
