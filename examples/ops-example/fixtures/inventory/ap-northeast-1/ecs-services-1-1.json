@@ -1,0 +1,1 @@
+{"services":[{"serviceArn":"arn:aws:ecs:ap-northeast-1:111122223333:service/prod/order-api","serviceName":"order-api","clusterArn":"arn:aws:ecs:ap-northeast-1:111122223333:cluster/prod","launchType":"FARGATE","desiredCount":2,"runningCount":2}]}

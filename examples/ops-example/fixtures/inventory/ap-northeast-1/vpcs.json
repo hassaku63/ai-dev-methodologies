@@ -1,0 +1,1 @@
+{"Vpcs":[{"VpcId":"vpc-0a1b2c3d4e5f60001","CidrBlock":"10.0.0.0/16","IsDefault":false,"Tags":[{"Key":"Name","Value":"main"}]},{"VpcId":"vpc-0a1b2c3d4e5f60002","CidrBlock":"172.31.0.0/16","IsDefault":true}]}

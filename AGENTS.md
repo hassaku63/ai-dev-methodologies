@@ -46,6 +46,8 @@ ai-dev-methodologies で作業する人間と AI コーディングエージェ�
 | `plugins/aws-ops/hooks/` | 運用・管理のリポジトリ向けのフック。AWS の操作を読み取りに限る（ADR-0009） | 通す操作を足したら `scripts/test-guard-aws.py` に行を足す。迷う操作は通さない |
 | `plugins/aws-ops/skills/adopt/assets/` | `aws-ops` の導入で置くファイル（`ops/` の置き場所） | `core` の `assets/` と同じ |
 | `plugins/aws-ops/skills/findings/` | Finding を、アプリケーションの単位でまとめる手順とスクリプト | 同じ入力から同じ記録を作る（時刻やネットワークを読まない）。出力を変えたら、架空の例の記録を作り直す |
+| `plugins/aws-ops/skills/inventory/` | 構成を取得するスクリプトと、棚卸しの記録を作るスクリプト | 取得は読み取りの操作だけにする（テストがフックの判定で確かめる）。同じ取得結果から同じ記録を作る |
+| `plugins/aws-ops/lib/apps.py` | アプリケーションの単位の定義の読み方と、リソースの当て方。Finding と棚卸しが共に使う | 当て方を変えたら、架空の例の記録を両方作り直す |
 | `examples/ops-example/` | 部品を確かめるための、架空の運用・管理のリポジトリ | 実在の環境の値を入れない |
 | `docs/contract.md` | 導入先が守る規約 | 手順の前提と食い違わせない |
 | `docs/architecture/adr/` | 決定の記録 | 索引に載せる |
@@ -57,6 +59,7 @@ make docs-check       # 文書の検査だけ
 make test-adopt       # 空のリポジトリに core を導入して確かめる
 make test-guard-aws   # aws-ops のフックを、コマンドの表で確かめる
 make test-findings    # Finding のまとめを、架空の例で確かめる
+make test-inventory   # 構成の棚卸しを、架空の例と偽の aws で確かめる
 make plugin-validate  # マーケットプレイスと plugin の定義（claude の CLI が要る）
 bash plugins/core/skills/adopt/adopt.sh .   # このリポジトリに core を導入し直す
 ```

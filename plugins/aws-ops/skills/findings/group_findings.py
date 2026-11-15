@@ -8,15 +8,8 @@ Usage:
 Input: the JSON that `aws securityhub get-findings` prints (an object with a
 "Findings" list), or a bare list of findings in the same format (ASFF).
 
-Applications are defined in the apps file:
-  {"apps": [{"name": "...", "description": "...",
-             "match": {"tags": {"App": "x"}, "name_prefixes": ["x-"],
-                       "arn_patterns": ["arn:aws:ecs:*:*:service/*/x-*"],
-                       "accounts": ["111122223333"]}}]}
-A resource belongs to the first application, in file order, for which any one
-of the matchers holds. `tags` holds when every listed tag has the listed value.
-`name_prefixes` holds when a part of the resource identifier starts with one of
-the prefixes (for an ARN: the parts after the account, split on "/" and ":").
+Applications are defined in the apps file; its format and the matching rules
+are described in lib/apps.py of this plugin.
 
 By default only findings that still need attention are counted: record state
 ACTIVE, workflow status NEW or NOTIFIED, compliance status not PASSED.
@@ -26,11 +19,13 @@ The same input always gives the same output: nothing is read from the clock or
 the network. Python 3 standard library only.
 """
 import argparse
-import fnmatch
 import json
-import re
 import sys
 from collections import defaultdict
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "lib"))
+from apps import app_of, load_apps  # noqa: E402
 
 SEVERITIES = ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFORMATIONAL"]
 UNMAPPED = "（どのアプリケーションにも当たらない）"
@@ -49,59 +44,12 @@ def load_findings(paths):
     return findings
 
 
-def load_apps(path):
-    with open(path, encoding="utf-8") as f:
-        data = json.load(f)
-    apps = data.get("apps")
-    if not isinstance(apps, list):
-        raise SystemExit(f"group-findings: {path}: \"apps\" must be a list")
-    names = set()
-    for app in apps:
-        name = app.get("name")
-        if not name or name in names:
-            raise SystemExit(f"group-findings: {path}: every app needs a unique \"name\"")
-        names.add(name)
-        unknown = set(app.get("match", {})) - {"tags", "name_prefixes", "arn_patterns", "accounts"}
-        if unknown:
-            raise SystemExit(f"group-findings: {path}: {name}: unknown matcher {sorted(unknown)}")
-    return apps
-
-
 def needs_attention(finding):
     if finding.get("RecordState", "ACTIVE") != "ACTIVE":
         return False
     if (finding.get("Workflow") or {}).get("Status", "NEW") not in ("NEW", "NOTIFIED"):
         return False
     return (finding.get("Compliance") or {}).get("Status") != "PASSED"
-
-
-def resource_names(resource_id):
-    """The parts of an identifier that can carry a name.
-
-    For an ARN these are the parts of the resource section, split on "/" and
-    ":" (task-definition/order-api:42 gives task-definition, order-api, 42).
-    """
-    parts = resource_id.split(":", 5)
-    resource = parts[5] if len(parts) == 6 and parts[0] == "arn" else resource_id
-    return [p for p in re.split(r"[/:]", resource) if p]
-
-
-def app_of(resource, account, apps):
-    rid = resource.get("Id", "")
-    tags = resource.get("Tags") or {}
-    names = resource_names(rid)
-    for app in apps:
-        match = app.get("match", {})
-        wanted = match.get("tags")
-        if wanted and all(tags.get(k) == v for k, v in wanted.items()):
-            return app["name"]
-        if any(n.startswith(p) for n in names for p in match.get("name_prefixes", [])):
-            return app["name"]
-        if any(fnmatch.fnmatchcase(rid, p) for p in match.get("arn_patterns", [])):
-            return app["name"]
-        if account in match.get("accounts", []):
-            return app["name"]
-    return UNMAPPED
 
 
 def severity_of(finding):
@@ -128,7 +76,7 @@ def build(findings, apps):
         region = finding.get("Region", "")
         url = (((finding.get("Remediation") or {}).get("Recommendation") or {}).get("Url")) or ""
         for resource in finding.get("Resources") or [{"Id": "(no resource)"}]:
-            app = app_of(resource, account, apps)
+            app = app_of(resource.get("Id", ""), resource.get("Tags") or {}, account, apps) or UNMAPPED
             entry = grouped[app].setdefault(issue_of(finding), {
                 "severity": severity_of(finding), "url": url,
                 "product": finding.get("ProductName", ""), "resources": set(),

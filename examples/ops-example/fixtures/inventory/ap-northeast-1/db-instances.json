@@ -1,0 +1,1 @@
+{"DBInstances":[{"DBInstanceIdentifier":"order-db","DBInstanceArn":"arn:aws:rds:ap-northeast-1:111122223333:db:order-db","Engine":"postgres","EngineVersion":"16.4","DBInstanceClass":"db.t4g.medium","MultiAZ":false,"PubliclyAccessible":false}]}
