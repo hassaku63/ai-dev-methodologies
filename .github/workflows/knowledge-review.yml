@@ -2,8 +2,8 @@ name: knowledge review
 
 # Monthly report of the catalog entries that may have gone stale (ADR-0011,
 # docs/dev/knowledge-review.md). It depends on the date and the network, so it is
-# not part of `make check`. A pull request that changes the script or this file
-# runs the report without touching any issue.
+# not part of `make check`. A pull request that changes the catalog, the script
+# or this file runs the report without touching any issue.
 on:
   schedule:
     - cron: '17 3 1 * *'
@@ -11,6 +11,7 @@ on:
   pull_request:
     paths:
       - scripts/knowledge-staleness.py
+      - plugins/knowledge/catalog/**
       - .github/workflows/knowledge-review.yml
 
 permissions:
