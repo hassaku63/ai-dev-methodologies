@@ -7,7 +7,11 @@
 #   5. A second plugin (aws-ops) keeps the lock lines of the first.
 #   6. aws-iac's check runs every step with stub tools, fails when a tool
 #      fails or is missing, and calls nothing its guard would stop.
+#   7. knowledge's mapping check accepts catalog IDs and rejects unknown,
+#      duplicated, empty and malformed rows and local entries.
 # Part of `make check`. Needs bash, git, make.
+# Backticks inside single quotes are Markdown here, not command substitution.
+# shellcheck disable=SC2016
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -115,7 +119,61 @@ if STUB_LOG=/dev/null PATH="/usr/bin:/bin" bash "$second/scripts/check-iac.sh" >
   fail "check-iac.sh passed although the tools are missing"
 fi
 
-# 7. --dry-run writes nothing
+# 7. knowledge: the mapping check passes with catalog IDs, and catches the usual mistakes
+bash "$PWD/plugins/knowledge/skills/adopt/adopt.sh" "$second" > "$work/knowledge.log"
+grep -q '^added    scripts/check-knowledge.py$' "$work/knowledge.log" || fail "knowledge did not add scripts/check-knowledge.py"
+grep -q '^added    scripts/knowledge/catalog.py$' "$work/knowledge.log" || fail "knowledge did not add its catalog reader"
+[ ! -L "$second/scripts/knowledge/catalog.py" ] || fail "the catalog reader was copied as a symbolic link"
+grep -q '^created  docs/knowledge/practices.md$' "$work/knowledge.log" || fail "knowledge did not create the practices mapping"
+grep -q ' aws-iac$' "$second/.agents/methodology.lock" || fail "knowledge dropped lines of aws-iac from the lock"
+kcheck() { python3 "$second/scripts/check-knowledge.py" > "$work/kcheck.log" 2>&1; }
+kcheck || { cat "$work/kcheck.log" >&2; fail "the mapping check fails right after adoption"; }
+practices="$second/docs/knowledge/practices.md"
+cp "$practices" "$work/practices.orig"
+python3 plugins/knowledge/skills/adopt/list_items.py practices general testing > "$work/rows.txt"
+python3 - "$practices" "$work/rows.txt" <<'PY'
+import sys
+path, rows = sys.argv[1], open(sys.argv[2]).read()
+text = open(path).read()
+head = "| 項目 | このリポジトリでの場面 | このプロジェクトの立場 |\n| --- | --- | --- |\n"
+open(path, "w").write(text.replace(head, head + rows, 1))
+PY
+kcheck || { cat "$work/kcheck.log" >&2; fail "the mapping check fails with rows from the catalog"; }
+inject() { # inject <text after the header of 使う項目>
+  cp "$work/practices.orig" "$practices"
+  python3 - "$practices" "$1" <<'PY'
+import sys
+path, extra = sys.argv[1], sys.argv[2].replace("\\n", "\n")
+text = open(path).read()
+head = "| 項目 | このリポジトリでの場面 | このプロジェクトの立場 |\n| --- | --- | --- |\n"
+open(path, "w").write(text.replace(head, head + extra + "\n", 1))
+PY
+}
+inject '| `no-such-entry` | — | 未定 |'
+kcheck && fail "an ID that is not in the catalog was accepted"
+inject '| `yagni` | — | 未定 |\n| `yagni` | — | 未定 |'
+kcheck && fail "an ID listed twice was accepted"
+inject '| `yagni` | — |  |'
+kcheck && fail "an empty 立場 was accepted"
+inject '| yagni | — | 未定 |'
+kcheck && fail "an ID without backticks was accepted"
+cp "$work/practices.orig" "$practices"
+printf '\n### 架空の知見\n\n| 欄 | 内容 |\n| --- | --- |\n| ID | `local-thing` |\n' >> "$practices"
+python3 - "$practices" <<'PY'
+import sys
+path = sys.argv[1]
+text = open(path).read()
+# move the appended entry under このリポジトリの項目
+entry = text[text.index("\n### 架空の知見"):]
+text = text[:text.index("\n### 架空の知見")]
+text = text.replace("## 外したもの", entry.strip("\n") + "\n\n## 外したもの", 1)
+open(path, "w").write(text)
+PY
+kcheck && fail "a local entry with missing fields was accepted"
+grep -q "missing field" "$work/kcheck.log" || fail "the local entry was not checked for its fields"
+cp "$work/practices.orig" "$practices"
+
+# 8. --dry-run writes nothing
 dry="$work/dry"; mkdir "$dry"; git -C "$dry" init -q
 bash "$adopt" --dry-run "$dry" > /dev/null
 [ "$(ls -A "$dry")" = ".git" ] || fail "--dry-run wrote files"

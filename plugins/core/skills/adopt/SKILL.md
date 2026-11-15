@@ -24,7 +24,7 @@ disable-model-invocation: true
    - `.claude/settings.json`: 今ある設定を残し、`extraKnownMarketplaces` と `enabledPlugins` の項目を足す。
    - `.github/workflows/ci.yml`: 今ある CI に、`make check` を呼ぶ必須のジョブがあるようにする。
    - `docs/README.md`: `docs/` の文書を全部、Markdown のリンクで載せる。
-   - `.gitignore`: `.claude/settings.local.json` を足す。
+   - `.gitignore`: `.claude/settings.local.json` と `__pycache__/` を足す。
 5. **埋める。** 作ったファイルの「（導入先で書く: …）」を、リポジトリを読んで分かる範囲で埋める。推測で埋めない。読んでも分からないものは、所有者に尋ねるか、そのまま残して最後に一覧にする。
    - 今ある検査を `docs/dev/harness.md` に 1 行ずつ足す。
    - CI の雛形の「Set up the tools」に、検査が要る道具の導入を書く。
