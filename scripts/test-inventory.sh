@@ -4,6 +4,8 @@
 #   2. collect.sh, run against a stub `aws`, makes only calls the aws-ops guard
 #      would let through, batches ECS services by ten, and goes on after a
 #      failed call, leaving an .error file that the record mentions.
+#   3. Types without a table are listed, and a record without any discovery
+#      source says so.
 # Part of `make check`. Needs bash and python3.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -53,5 +55,13 @@ PY
 [ -f "$work/raw/us-east-1/vpcs.json" ] || fail "a call after nothing failed left no file"
 python3 "$skill/summarize_inventory.py" --raw "$work/raw" > "$work/partial.md"
 grep -q '取得できなかったもの.*db-instances' "$work/partial.md" || fail "the record does not mention the part that could not be fetched"
+
+
+# 3. without any discovery source the record says that it only holds the fixed types
+mkdir -p "$work/bare/us-east-1"
+echo '{"Vpcs": []}' > "$work/bare/us-east-1/vpcs.json"
+python3 "$skill/summarize_inventory.py" --raw "$work/bare" > "$work/bare.md"
+grep -q 'どの出どころからも取れなかった' "$work/bare.md" || fail "the record does not say that discovery found no source"
+grep -q 'sqs' "$work/inventory.md" || fail "a type without a table of its own is missing from the record"
 
 echo "test-inventory: ok"

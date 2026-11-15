@@ -20,7 +20,6 @@
 
 ## あとで検討すること
 
-- このリポジトリの GitHub に、規約のラベル（`docs/contract.md`）を作る。作るまでは、Issue の流れは働かない。
 - 「あとで検討すること」を `observation` の Issue に移し、この節をなくす（`docs/dev/docs-hygiene.md` の規約）。
 - `make doctor` と `.tool-versions`、`actions-lint` を `core` で配るか（`docs/comparison-chord-rambler.md` の「`core` にないもの」）。
 - 役割の分担（指示書をファイルで渡す、実装に関わっていない目で確かめる、修正の回数に上限を置く）を、運用・管理の調査にどう当てるか。

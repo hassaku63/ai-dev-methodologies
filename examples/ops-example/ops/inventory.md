@@ -4,6 +4,8 @@ AWS から読み取った構成を、そのまま表にしたもの。対象の�
 
 ## ap-northeast-1
 
+取得できなかったもの（権限かサービスの状態による。該当する表は欠けている）: `discovered-explorer`
+
 ### ネットワーク
 
 | VPC | 名前 | CIDR | 既定 |
@@ -81,3 +83,65 @@ Lambda の関数。
 | 識別子 | アプリケーション | エンジン | クラス | マルチ AZ | 公開の設定 |
 | --- | --- | --- | --- | --- | --- |
 | order-db | order-api | postgres 16.4 | db.t4g.medium | いいえ | いいえ |
+
+### すべての種類
+
+種類を問わずに見つけたリソースの数。出どころ: AWS Config、タグ付けの API。取れなかった出どころ: Resource Explorer。
+出どころには漏れがある（AWS Config は記録の対象の種類だけ、タグ付けの API はタグを持つか持ったことのあるものだけ、Resource Explorer は索引のあるリージョンで 1000 件まで）。ここに無いことは、無いことの証明にならない。
+
+| 種類 | 数 | 詳しい表 | 出どころ |
+| --- | --- | --- | --- |
+| `dynamodb:table` | 1 | なし | AWS Config |
+| `ec2:instance` | 2 | あり | AWS Config、タグ付けの API |
+| `ec2:security-group` | 1 | あり | AWS Config |
+| `ec2:volume` | 3 | なし | AWS Config |
+| `ecr:repository` | 1 | なし | AWS Config |
+| `events:rule` | 1 | なし | タグ付けの API |
+| `lambda:function` | 1 | あり | AWS Config |
+| `logs:log-group` | 1 | なし | タグ付けの API |
+| `rds:db` | 1 | あり | AWS Config |
+| `s3` | 2 | なし | AWS Config、タグ付けの API |
+| `secretsmanager:secret` | 1 | なし | タグ付けの API |
+| `sns` | 1 | なし | AWS Config |
+| `sqs` | 1 | なし | AWS Config |
+
+詳しい表が無い種類のリソース。必要なものは、個別に読み取って調べる。
+
+`dynamodb:table`（1 件）
+
+- `arn:aws:dynamodb:ap-northeast-1:111122223333:table/report-state`
+
+`ec2:volume`（3 件）
+
+- `arn:aws:ec2:ap-northeast-1:111122223333:volume/vol-0123456789abcdef1`
+- `arn:aws:ec2:ap-northeast-1:111122223333:volume/vol-0123456789abcdef2` アプリケーション: report-batch
+- `arn:aws:ec2:ap-northeast-1:111122223333:volume/vol-0123456789abcdef3`
+
+`ecr:repository`（1 件）
+
+- `arn:aws:ecr:ap-northeast-1:111122223333:repository/order-api` アプリケーション: order-api
+
+`events:rule`（1 件）
+
+- `arn:aws:events:ap-northeast-1:111122223333:rule/report-nightly-schedule` アプリケーション: report-batch
+
+`logs:log-group`（1 件）
+
+- `arn:aws:logs:ap-northeast-1:111122223333:log-group:/ecs/order-api` アプリケーション: order-api
+
+`s3`（2 件）
+
+- `arn:aws:s3:::example-old-uploads` タグ: Owner=unknown
+- `arn:aws:s3:::example-report-output` アプリケーション: report-batch
+
+`secretsmanager:secret`（1 件）
+
+- `arn:aws:secretsmanager:ap-northeast-1:111122223333:secret:legacy-api-key-AbCdEf` タグ: CreatedBy=unknown
+
+`sns`（1 件）
+
+- `arn:aws:sns:ap-northeast-1:111122223333:alert-notify`
+
+`sqs`（1 件）
+
+- `arn:aws:sqs:ap-northeast-1:111122223333:order-events` アプリケーション: order-api
