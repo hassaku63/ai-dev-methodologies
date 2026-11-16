@@ -86,4 +86,6 @@
 
 所有者がネットワークの許可を広げたあと、W3C、MDN、Docker の文書、NN/g、Martin Fowler、Sandi Metz、Jane Street に出どころを持つ 34 項目（一般の 5、HCI の 26、業界標準の 3）を、同じ日に開き直した（HCI の 26 項目は、確認日を開き直した日にした）。28 項目は合っていた。食い違った 6 項目（`motion-and-reduced-motion`、`choice-overload-defaults`、`contrast-wcag`、`dark-mode-polarity`、`buildkit-build-checks`、`fitts-target-size` の言い方）は直した。これらの項目のうち、論文や書籍にしか根拠の無い主張は、開き直していない（HCI の束の確からしさに「未確認」とあるもの）。
 
+2026-11-16 に、許可ホストを入れ替えて、jnd.org、billbuxton.com、www.cs.umd.edu、bottosson.github.io、jfly.uni-koeln.de、www.uxtigers.com に出どころを持つ 8 項目も開き直した。どれも合っていた（`color-universal-design` の判断の問いの言い方だけ直した）。出どころがすべて開けた `affordances-signifiers` と `color-universal-design` は、確認日をその日にした。`conceptual-models-mapping` は、本の紹介のページ（目次）しか開けず、中身は確かめていないので、確認日を変えていない。
+
 それ以外の項目（ほかの出どころ）は、このリポジトリでは出どころの中身を開き直していない（月次の報告が、出どころの URL が開けることと、記録したソースが変わっていないことを確かめる）。
